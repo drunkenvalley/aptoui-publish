@@ -1,0 +1,9 @@
+## Interface: 120000, 120001
+## Title: AptoHUD
+## Author: aptosaurinae
+## Version: 0.1
+## Category: hud
+## SavedVariables: AptoHUDDB
+## LoadSavedVariablesFirst: 1
+
+aptohud.lua
