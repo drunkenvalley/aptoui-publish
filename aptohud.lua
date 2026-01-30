@@ -1,7 +1,17 @@
 -- saved variables must be global not local
 AptoHUDDB = AptoHUDDB or {};
 
--- Using UnitHealthPercent as not secret
+local playerHealthEvents = {
+    "UNIT_HEALTH",
+    "UNIT_MAXHEALTH",
+    "PLAYER_REGEN_DISABLED",
+    "PLAYER_REGEN_ENABLED",
+}
+local targetHealthEvents = {
+    "UNIT_HEALTH",
+    "UNIT_MAXHEALTH",
+    "PLAYER_TARGET_CHANGED"
+}
 
 local frame = CreateFrame("Frame");
 frame:RegisterEvent("PLAYER_LOGIN");
@@ -65,13 +75,9 @@ end
 
 -- Set up display items
 local display_playerhp = CreateHealthPercentDisplay(
-    UIParent, "CENTER", "player", -100, 0,
-    { "UNIT_HEALTH", "UNIT_MAXHEALTH" }
-)
+    UIParent, "CENTER", "player", -165, 50, playerHealthEvents)
 local display_targethp = CreateHealthPercentDisplay(
-    UIParent, "CENTER", "target", 100, 0,
-    { "UNIT_HEALTH", "UNIT_MAXHEALTH", "PLAYER_TARGET_CHANGED" }
-)
+    UIParent, "CENTER", "target", 165, 50, targetHealthEvents)
 
 -- Updates the mask based on health values
 local function UpdateTextureUsingPercent(unitName, textureItem)
@@ -86,7 +92,7 @@ end
 
 local function CreateHexSegmentPlayerHP(parent, point, xOffset, yOffset)
     local unitName = "player"
-    local regEvents = { "UNIT_HEALTH", "UNIT_MAXHEALTH" }
+    local regEvents = playerHealthEvents
 
     local frame = CreateFrame("Frame", nil, parent)
     frame:SetSize(100, 100)
@@ -114,7 +120,6 @@ local function CreateHexSegmentPlayerHP(parent, point, xOffset, yOffset)
     for _, eventName in ipairs(regEvents) do
         frame:RegisterEvent(eventName)
     end
-
 
     UpdateTextureUsingPercent(unitName, fill)
     return frame
