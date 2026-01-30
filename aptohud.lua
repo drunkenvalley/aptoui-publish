@@ -36,18 +36,13 @@ local function SetFrameColourFromPercent(frame, percent, percentreverse)
     end
 end
 
--- Hex Segments
-
-local hexTop = frame:CreateTexture(nil, "ARTWORK")
-segTop:SetTexture("Interface\\AddOns\\AptoHUD\\Textures\\hex-ring-512-top")
-segTop:SetAllPoints()
-
-local mask = frame:CreateMaskTexture()
-mask:SetTexture("Interface\\AddOns\\AptoHUD\\Textures\\hex-ring-512-top", "CLAMPTOBLACKADDITIVE", "CLAMPTOBLACKADDITIVE")
-mask:SetAllPoints()
-
-segTop:AddMaskTexture(mask)
-
+-- Get secret health values
+local function GetHealthValues(unitName)
+    local perc1 = UnitHealthPercent(unitName, false, CurveConstants.ZeroToOne)
+    local perc1reverse = UnitHealthPercent(unitName, false, CurveConstants.Reverse)
+    local perc100 = UnitHealthPercent(unitName, false, CurveConstants.ScaleTo100)
+    return perc1, perc1reverse, perc100
+end
 
 -- Create a health percentage display number
 local function CreateHealthPercentDisplay(parent, point, unitName, xOffset, yOffset, regEvents)
@@ -59,14 +54,12 @@ local function CreateHealthPercentDisplay(parent, point, unitName, xOffset, yOff
     frame.text:SetPoint("CENTER")
 
     local function Update()
-        local perc1 = UnitHealthPercent(unitName, false, CurveConstants.ZeroToOne)
-        local perc1reverse = UnitHealthPercent(unitName, false, CurveConstants.Reverse)
-        local perc100 = UnitHealthPercent(unitName, false, CurveConstants.ScaleTo100)
+        local perc1, perc1r, perc100 = GetHealthValues(unitName)
         if perc100 == nil then
             frame.text:SetText("")
         else
             frame.text:SetText(("%.0f"):format(perc100))
-            SetFrameColourFromPercent(frame, perc1, perc1reverse)
+            SetFrameColourFromPercent(frame, perc1, perc1r)
         end
     end
 
@@ -100,11 +93,9 @@ local display_targethp = CreateHealthPercentDisplay(
     { "UNIT_HEALTH", "UNIT_MAXHEALTH", "PLAYER_TARGET_CHANGED" }
 )
 
-
-local function UpdateMask(unitName, textureItem)
-    local perc1 = UnitHealthPercent(unitName, false, CurveConstants.ZeroToOne)
-    local perc1reverse = UnitHealthPercent(unitName, false, CurveConstants.Reverse)
-    local perc100 = UnitHealthPercent(unitName, false, CurveConstants.ScaleTo100)
+-- Updates the mask based on health values
+local function UpdateTextureUsingPercent(unitName, textureItem)
+    local perc1, perc1r, perc100 = GetHealthValues(unitName)
     if not perc1 then
         textureItem:Hide()
         return
@@ -136,7 +127,7 @@ local function CreateHexSegmentPlayerHP(parent, point, xOffset, yOffset)
 
     fill:AddMaskTexture(mask)
 
-    UpdateMask(unitName, fill)
+    UpdateTextureUsingPercent(unitName, fill)
 
     frame:SetScript("OnEvent", function(_, event, eventUnit)
         if eventUnit == unitName then
@@ -152,6 +143,4 @@ local function CreateHexSegmentPlayerHP(parent, point, xOffset, yOffset)
     return frame
 end
 
-local hex_playerhp = CreateHexSegmentPlayerHP(
-    UIParent, "CENTER", 0, 0,
-)
+local hex_playerhp = CreateHexSegmentPlayerHP(UIParent, "CENTER", 0, 0)
