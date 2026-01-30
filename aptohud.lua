@@ -16,32 +16,12 @@ frame:SetScript("OnEvent", function(self, event)
     end
 end);
 
--- Set the frame colour dynamically depending on the health percentage
-local function SetFrameColourFromPercent(frame, percent, percentreverse)
-    if issecretvalue(percent) == false then
-        local greenThreshold = 80
-        local redThreshold = 40
-        if percent > greenThreshold then
-            frame.text:SetTextColor(0, 1, 0)
-        elseif percent < redThreshold then
-            frame.text:SetTextColor(1, 0, 0)
-        else
-            local t = (greenThreshold - percent) / (greenThreshold - redThreshold)
-            local r = t
-            local g = 1 - t
-            frame.text:SetTextColor(r, g, 0)
-        end
-    else
-        frame.text:SetTextColor(percentreverse, percent, 0)
-    end
-end
-
 -- Get secret health values
 local function GetHealthValues(unitName)
     local perc1 = UnitHealthPercent(unitName, false, CurveConstants.ZeroToOne)
-    local perc1reverse = UnitHealthPercent(unitName, false, CurveConstants.Reverse)
+    local perc1r = UnitHealthPercent(unitName, false, CurveConstants.Reverse)
     local perc100 = UnitHealthPercent(unitName, false, CurveConstants.ScaleTo100)
-    return perc1, perc1reverse, perc100
+    return perc1, perc1r, perc100
 end
 
 -- Create a health percentage display number
@@ -59,7 +39,7 @@ local function CreateHealthPercentDisplay(parent, point, unitName, xOffset, yOff
             frame.text:SetText("")
         else
             frame.text:SetText(("%.0f"):format(perc100))
-            SetFrameColourFromPercent(frame, perc1, perc1r)
+            frame.text:SetTextColor(perc1r, perc1, 0)
         end
     end
 
@@ -101,9 +81,7 @@ local function UpdateTextureUsingPercent(unitName, textureItem)
         return
     end
     textureItem:Show()
-    local h = frame:GetHeight()
-    textureItem:SetHeight(perc100)
-    textureItem:SetVertexColor(perc1reverse, perc1, 0)
+    textureItem:SetVertexColor(perc1r, perc1, 0, perc1r)
 end
 
 local function CreateHexSegmentPlayerHP(parent, point, xOffset, yOffset)
@@ -112,15 +90,13 @@ local function CreateHexSegmentPlayerHP(parent, point, xOffset, yOffset)
 
     local frame = CreateFrame("Frame", nil, parent)
     frame:SetSize(100, 100)
-    frame:SetScale(5.12)
+    frame:SetScale(3.5)
     frame:SetPoint(point, parent, point, xOffset, yOffset)
 
-    -- Fill texture (this is what grows/shrinks)
     local fill = frame:CreateTexture(nil, "ARTWORK")
-    fill:SetColorTexture(0, 1, 0) -- green for now
+    fill:SetColorTexture(1, 1, 1, 0.75)
     fill:SetAllPoints()
 
-    -- Mask texture (your bottom-left hex segment)
     local mask = frame:CreateMaskTexture()
     mask:SetTexture("Interface\\AddOns\\AptoHUD\\Textures\\hex-ring-512-bl", "CLAMPTOBLACKADDITIVE", "CLAMPTOBLACKADDITIVE")
     mask:SetAllPoints()
@@ -131,7 +107,7 @@ local function CreateHexSegmentPlayerHP(parent, point, xOffset, yOffset)
 
     frame:SetScript("OnEvent", function(_, event, eventUnit)
         if eventUnit == unitName then
-            Update()
+            UpdateTextureUsingPercent(unitName, fill)
         end
     end)
 
@@ -139,7 +115,8 @@ local function CreateHexSegmentPlayerHP(parent, point, xOffset, yOffset)
         frame:RegisterEvent(eventName)
     end
 
-    Update()
+
+    UpdateTextureUsingPercent(unitName, fill)
     return frame
 end
 
