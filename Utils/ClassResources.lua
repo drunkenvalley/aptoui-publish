@@ -13,10 +13,25 @@ local power_hunter = { primary = "Focus" }
 local power_mage = power_mana
 local power_paladin = { primary = "Mana", secondary = "HolyPower" }
 local power_priest = power_mana
-local power_rogue = { primary = "Energy" , secondary = "ComboPoints"}
+local power_rogue = { primary = "Energy" , secondary = "ComboPoints" }
 local power_shaman = power_mana
 local power_warlock = power_mana
 local power_warrior = power_rage
+
+local powerStartsAtZeroList = {
+    "Rage",
+    "RunicPower",
+    "HolyPower",
+    "ComboPoints",
+    "Fury",
+    "ArcaneCharges",
+    "Insanity",
+    "Maelstrom",
+}
+local powerStartsAtZero = {}
+for _, name in ipairs(powerStartsAtZeroList) do
+    powerStartsAtZero[name] = true
+end
 
 -- See wowlookups/ClassSpecs for the numbers used here
 local PowerLookup = {
@@ -40,7 +55,7 @@ local PowerLookup = {
         -- balance
         [102] = { primary = "Mana", secondary = "LunarPower" },
         -- feral
-        [103] = { primary = "Energy", secondary = "ComboPoints", tertiary = "Mana" },
+        [103] = { primary = "Energy", secondary = "ComboPoints" },
         -- guardian
         [104] = power_rage,
         -- resto
@@ -136,15 +151,21 @@ local function GetPowerID(powerName)
     end
 end
 
-function AptoHUD.PowerFromClassAndSpec(class, specID)
+local function IsStartsAtZero(powerName)
+    return powerStartsAtZero[powerName] or false
+end
+
+-- Gets the power type ID from a lookup, based on the class and spec ID
+function AptoHUD.Resources.PowerFromClassAndSpec(class, specID)
     local specData = PowerLookup[class] and PowerLookup[class][specID]
     if not specData then
-        return nil, nil, nil
+        return nil, nil
     end
 
     local primary   = GetPowerID(specData.primary)
+    local primaryStartsAtZero = IsStartsAtZero(specData.primary)
     local secondary = specData.secondary and GetPowerID(specData.secondary) or nil
-    local tertiary  = specData.tertiary and GetPowerID(specData.tertiary) or nil
+    local secondaryStartsAtZero = IsStartsAtZero(specData.secondary)
 
-    return primary, secondary, tertiary
+    return primary, primaryStartsAtZero, secondary, secondaryStartsAtZero
 end

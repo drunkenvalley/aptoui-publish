@@ -42,7 +42,7 @@ function AptoHUD.HUD.CreateHexSegmentPlayerHP(parent, point, xOffset, yOffset)
 
     frame:SetScript("OnEvent", function(_, event, eventUnit)
         if eventUnit == unitName then
-            UpdateHealthTextureUsingPercent(unitName, fgFfillill)
+            UpdateHealthTextureUsingPercent(unitName, fill)
         end
         if event == "PLAYER_REGEN_DISABLED" then
             fill:SetColorTexture(1, 1, 1, AptoHUD.HUD.HUDAlpha.combat)

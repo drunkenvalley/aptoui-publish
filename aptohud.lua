@@ -22,7 +22,10 @@ AptoHUD.HUD.HUDAlpha = {
 AptoHUD.HUD.HUDScale = 3
 AptoHUD.HUD.Textures = {
     Health = "Interface\\AddOns\\AptoHUD\\Textures\\hex-ring-512-bl",
-    Power = "Interface\\AddOns\\AptoHUD\\Textures\\hex-ring-512-br"
+    Power = {
+        primary = "Interface\\AddOns\\AptoHUD\\Textures\\hex-ring-512-br",
+        secondary = "Interface\\AddOns\\AptoHUD\\Textures\\hex-ring-512-top",
+    }
 }
 
 -- ----- Initial setup
