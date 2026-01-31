@@ -6,4 +6,10 @@
 ## SavedVariables: AptoHUDDB
 ## LoadSavedVariablesFirst: 1
 
-aptohud.lua
+Core.lua
+WowLookups/ClassColours.lua
+WowLookups/ClassSpecs.lua
+WowLookups/PowerTypes.lua
+Utils/ClassResources.lua
+Utils/PlayerData.lua
+AptoHUD.lua
