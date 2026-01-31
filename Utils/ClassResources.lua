@@ -18,7 +18,7 @@ local power_shaman = power_mana
 local power_warlock = power_mana
 local power_warrior = power_rage
 
-AptoHUD.Power = {
+local PowerLookup = {
     deathknight = {
         -- Blood
         250 = power_dk
@@ -126,3 +126,24 @@ AptoHUD.Power = {
         73 = power_warrior
     }
 }
+
+local function GetPowerID(powerName)
+    for _, entry in ipairs(AptoHUD.WOW.PowerTypes) do
+        if entry.Name == powerName then
+            return entry.EnumValue
+        end
+    end
+end
+
+function AptoHUD.PowerFromClassAndSpec(class, specID)
+    local specData = PowerLookup[class] and PowerLookup[class][specID]
+    if not specData then
+        return nil, nil, nil
+    end
+
+    local primary   = GetPowerID(specData.primary)
+    local secondary = specData.secondary and GetPowerID(specData.secondary) or nil
+    local tertiary  = specData.tertiary and GetPowerID(specData.tertiary) or nil
+
+    return primary, secondary, tertiary
+end
