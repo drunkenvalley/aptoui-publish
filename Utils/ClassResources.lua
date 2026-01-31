@@ -1,5 +1,7 @@
 local addonName, AptoHUD = ...
 
+-- Todo: Consider tracking things like Whirlwind charges for Warrior, or Stagger for Brewmaster?
+
 local power_mana = { primary = "Mana" }
 local power_energy = { primary = "Energy" }
 local power_rage = { primary = "Rage" }
@@ -9,7 +11,6 @@ local power_dh = { primary = "Fury" }
 local power_evoker = { primary = "Mana", secondary = "Essence" }
 local power_hunter = { primary = "Focus" }
 local power_mage = power_mana
-local power_monk = power_energy
 local power_paladin = { primary = "Mana", secondary = "HolyPower" }
 local power_priest = power_mana
 local power_rogue = { primary = "Energy" , secondary = "ComboPoints"}
@@ -36,9 +37,9 @@ AptoHUD.Power = {
     },
     druid = {
         -- balance
-        102 = { primary = "LunarPower" }
+        102 = { primary = "Mana", secondary = "LunarPower" }
         -- feral
-        103 = { primary = "Energy", secondary = "ComboPoints" }
+        103 = { primary = "Energy", secondary = "ComboPoints", tertiary = "Mana" }
         -- guardian
         104 = power_rage
         -- resto
@@ -69,12 +70,59 @@ AptoHUD.Power = {
         64 = power_mage
     },
     monk = {
-
+        -- Brewmaster
+        268 = { primary = "Energy" }
+        -- Mistweaver
+        270 = power_mana
+        -- Windwalker
+        269 = { primary = "Energy", secondary = "Chi" }
     },
-    paladin = {},
-    priest = {},
-    rogue = {},
-    shaman = {},
-    warlock = {},
-    warrior = {}
+    paladin = {
+        -- Holy
+        65 = power_paladin
+        -- Protection
+        66 = power_paladin
+        -- Retribution
+        70 = power_paladin
+    },
+    priest = {
+        -- Discipline
+        256 = power_priest
+        -- Holy
+        257 = power_priest
+        -- Shadow
+        258 = { primary = "Mana", secondary = "Insanity" }
+    },
+    rogue = {
+        -- Assassination
+        259 = power_rogue
+        -- Outlaw
+        260 = power_rogue
+        -- Subtlety
+        261 = power_rogue
+    },
+    shaman = {
+        -- Elemental
+        262 = { primary = "Mana", secondary = "Maelstrom" }
+        -- Enhancement
+        263 = power_shaman
+        -- Resto
+        264 = power_shaman
+    },
+    warlock = {
+        -- Affliction
+        265 = power_warlock
+        -- Demonology
+        266 = power_warlock
+        -- Destruction
+        267 = power_warlock
+    },
+    warrior = {
+        -- Arms
+        71 = power_warrior
+        -- Fury
+        72 = power_warrior
+        -- Protection
+        73 = power_warrior
+    }
 }
