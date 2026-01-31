@@ -4,23 +4,23 @@ local addonName, AptoHUD = ...
 AptoHUDDB = AptoHUDDB or {};
 
 -- Settings
-local AptoHUD.HUD.PlayerHealthEvents = {
+AptoHUD.HUD.PlayerHealthEvents = {
     "UNIT_HEALTH",
     "UNIT_MAXHEALTH",
     "PLAYER_REGEN_DISABLED",
     "PLAYER_REGEN_ENABLED",
 }
-local AptoHUD.HUD.PlayerPowerEvents = {
+AptoHUD.HUD.PlayerPowerEvents = {
     "UNIT_POWER_UPDATE",
     "PLAYER_REGEN_DISABLED",
     "PLAYER_REGEN_ENABLED",
 }
-local AptoHUD.HUD.HUDAlpha = {
-    combat = 0.75,
+AptoHUD.HUD.HUDAlpha = {
+    combat = 0.8,
     noCombat = 0.4
 }
-local AptoHUD.HUD.HUDScale = 3
-local AptoHUD.HUD.Textures = {
+AptoHUD.HUD.HUDScale = 3
+AptoHUD.HUD.Textures = {
     Health = "Interface\\AddOns\\AptoHUD\\Textures\\hex-ring-512-bl",
     Power = "Interface\\AddOns\\AptoHUD\\Textures\\hex-ring-512-br"
 }

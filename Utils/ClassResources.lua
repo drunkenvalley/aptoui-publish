@@ -18,112 +18,113 @@ local power_shaman = power_mana
 local power_warlock = power_mana
 local power_warrior = power_rage
 
+-- See wowlookups/ClassSpecs for the numbers used here
 local PowerLookup = {
     deathknight = {
         -- Blood
-        250 = power_dk
+        [250] = power_dk,
         -- Frost
-        251 = power_dk
+        [251] = power_dk,
         -- Unholy
-        252 = power_dk
+        [252] = power_dk
     },
     demonhunter = {
         -- Devourer
-        577 = power_dh
+        [577] = power_dh,
         -- Havoc
-        581 = power_dh
+        [581] = power_dh,
         -- Vengeance
-        1480 = power_dh
+        [1480] = power_dh
     },
     druid = {
         -- balance
-        102 = { primary = "Mana", secondary = "LunarPower" }
+        [102] = { primary = "Mana", secondary = "LunarPower" },
         -- feral
-        103 = { primary = "Energy", secondary = "ComboPoints", tertiary = "Mana" }
+        [103] = { primary = "Energy", secondary = "ComboPoints", tertiary = "Mana" },
         -- guardian
-        104 = power_rage
+        [104] = power_rage,
         -- resto
-        105 = power_mana
+        [105] = power_mana
     },
     evoker = {
         -- Augmentation
-        1473 = power_evoker
+        [1473] = power_evoker,
         -- Devastation
-        1467 = power_evoker
+        [1467] = power_evoker,
         -- Preservation
-        1468 = power_evoker
+        [1468] = power_evoker
     },
     hunter = {
         -- Beast Master
-        253 = power_hunter
+        [253] = power_hunter,
         -- Marksmanship
-        254 = power_hunter
+        [254] = power_hunter,
         -- Survival
-        255 = power_hunter
+        [255] = power_hunter
     },
     mage = {
         -- Arcane
-        62 = { primary = "Mana", secondary = "ArcaneCharges" }
+        [62] = { primary = "Mana", secondary = "ArcaneCharges" },
         -- Fire
-        63 = power_mage
+        [63] = power_mage,
         -- Frost
-        64 = power_mage
+        [64] = power_mage
     },
     monk = {
         -- Brewmaster
-        268 = { primary = "Energy" }
+        [268] = { primary = "Energy" },
         -- Mistweaver
-        270 = power_mana
+        [270] = power_mana,
         -- Windwalker
-        269 = { primary = "Energy", secondary = "Chi" }
+        [269] = { primary = "Energy", secondary = "Chi" }
     },
     paladin = {
         -- Holy
-        65 = power_paladin
+        [65] = power_paladin,
         -- Protection
-        66 = power_paladin
+        [66] = power_paladin,
         -- Retribution
-        70 = power_paladin
+        [70] = power_paladin
     },
     priest = {
         -- Discipline
-        256 = power_priest
+        [256] = power_priest,
         -- Holy
-        257 = power_priest
+        [257] = power_priest,
         -- Shadow
-        258 = { primary = "Mana", secondary = "Insanity" }
+        [258] = { primary = "Mana", secondary = "Insanity" }
     },
     rogue = {
         -- Assassination
-        259 = power_rogue
+        [259] = power_rogue,
         -- Outlaw
-        260 = power_rogue
+        [260] = power_rogue,
         -- Subtlety
-        261 = power_rogue
+        [261] = power_rogue
     },
     shaman = {
         -- Elemental
-        262 = { primary = "Mana", secondary = "Maelstrom" }
+        [262] = { primary = "Mana", secondary = "Maelstrom" },
         -- Enhancement
-        263 = power_shaman
+        [263] = power_shaman,
         -- Resto
-        264 = power_shaman
+        [264] = power_shaman
     },
     warlock = {
         -- Affliction
-        265 = power_warlock
+        [265] = power_warlock,
         -- Demonology
-        266 = power_warlock
+        [266] = power_warlock,
         -- Destruction
-        267 = power_warlock
+        [267] = power_warlock
     },
     warrior = {
         -- Arms
-        71 = power_warrior
+        [71] = power_warrior,
         -- Fury
-        72 = power_warrior
+        [72] = power_warrior,
         -- Protection
-        73 = power_warrior
+        [73] = power_warrior
     }
 }
 

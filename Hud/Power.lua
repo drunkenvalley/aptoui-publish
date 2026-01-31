@@ -57,7 +57,7 @@ function AptoHUD.HUD.CreateHexSegmentPlayerPower(parent, point, xOffset, yOffset
         end
     end)
 
-    local regEvents = PlayerPowerEvents
+    local regEvents = AptoHUD.HUD.PlayerPowerEvents
     for _, eventName in ipairs(regEvents) do
         frame:RegisterEvent(eventName)
     end
