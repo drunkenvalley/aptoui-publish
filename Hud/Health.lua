@@ -1,7 +1,5 @@
 local addonName, AptoHUD = ...
 
--- ----- Player Health
-
 -- Get secret health values
 local function GetHealthValues(unitName)
     local perc1 = UnitHealthPercent(unitName, false, CurveConstants.ZeroToOne)
@@ -23,7 +21,7 @@ end
 
 function AptoHUD.HUD.CreateHexSegmentPlayerHP(parent, point, xOffset, yOffset)
     local frame = CreateFrame("Frame", nil, parent)
-    frame:SetSize(128, 128)
+    frame:SetSize(512, 512)
     frame:SetScale(AptoHUD.HUD.HUDScale)
     frame:SetPoint(point, parent, point, xOffset, yOffset)
 

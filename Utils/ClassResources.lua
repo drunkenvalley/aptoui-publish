@@ -8,7 +8,9 @@ local power_mana = { primary = Enum.PowerType.Mana }
 local power_energy = { primary = Enum.PowerType.Energy }
 local power_rage = { primary = Enum.PowerType.Rage }
 
-local power_dk = { primary = Enum.PowerType.RunicPower , secondary = Enum.PowerType.Runes }
+-- local power_dk = { primary = Enum.PowerType.RunicPower , secondary = Enum.PowerType.Runes }
+-- disabling runes for DK for now because
+local power_dk = { primary = Enum.PowerType.RunicPower }
 local power_dh = { primary = Enum.PowerType.Fury }
 local power_evoker = { primary = Enum.PowerType.Mana, secondary = Enum.PowerType.Essence }
 local power_hunter = { primary = Enum.PowerType.Focus }
@@ -145,23 +147,16 @@ local PowerLookup = {
     }
 }
 
--- Gets the power type ID from a lookup, based on the class and spec ID
-function AptoHUD.Utils.GetPowerFromClassAndSpec(class, specID)
+-- Gets the power type ID from a lookup, based on the class and spec ID and type of power
+function AptoHUD.Utils.GetPowerFromClassAndSpec(class, specID, resourceType)
     local class = class:lower()
-    local specData = PowerLookup[class] and PowerLookup[class][specID]
-    if not specData then
+    local powerType = PowerLookup[class] and PowerLookup[class][specID][resourceType]
+    if not powerType then
         return nil, nil
     end
-
-    local primaryStartsAtZero = powerStartsAtZero[specData.primary] or false
-    local secondaryStartsAtZero = powerStartsAtZero[specData.secondary] or false
-
+    local startsAtZero = powerStartsAtZero[specData] or false
     if AptoHUD.debug then
-        print(
-            "GetPowerFromClassAndSpec",
-            specData.primary, primaryStartsAtZero,
-            specData.secondary, secondaryStartsAtZero
-        )
+        print("GetPowerFromClassAndSpec", powerType, startsAtZero)
     end
-    return specData.primary, primaryStartsAtZero, specData.secondary, secondaryStartsAtZero
+    return powerType, startsAtZero
 end

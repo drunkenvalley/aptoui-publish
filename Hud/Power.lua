@@ -1,17 +1,11 @@
 local addonName, AptoHUD = ...
 
--- ----- Power System
-
+-- Retrieve the type of resource that counts as primary / secondary for this class/spec
 local function GetResources(resourceType)
     local class = AptoHUD.Utils.GetPlayerClass()
     local spec, specID = AptoHUD.Utils.GetPlayerSpec()
-    local primary, primaryStartsAtZero, secondary, secondaryStartsAtZero = AptoHUD.Utils.GetPowerFromClassAndSpec(class, specID)
-    if resourceType == "primary" then
-        return primary, primaryStartsAtZero
-    elseif resourceType == "secondary" then
-        return secondary, secondaryStartsAtZero
-    end
-    return nil
+    local powerType, startsAtZero = AptoHUD.Utils.GetPowerFromClassAndSpec(class, specID, resourceType)
+    return powerType, startsAtZero
 end
 
 -- Get secret power values
@@ -20,6 +14,9 @@ local function GetPowerValues(unitName, resourceType)
         print("GetPowerValues unitname resourcetype", unitName, resourceType)
     end
     local powerType, startsAtZero = GetResources(resourceType)
+    if powerType == nil then
+        return nil
+    end if
     if startsAtZero then
         curveType = CurveConstants.ZeroToOne
     else
@@ -51,7 +48,7 @@ end
 
 function AptoHUD.HUD.CreateHexSegmentPlayerPower(parent, point, xOffset, yOffset, resourceType)
     local frame = CreateFrame("Frame", nil, parent)
-    frame:SetSize(128, 128)
+    frame:SetSize(512, 512)
     frame:SetScale(AptoHUD.HUD.HUDScale)
     frame:SetPoint(point, parent, point, xOffset, yOffset)
 

@@ -4,7 +4,7 @@ local addonName, AptoHUD = ...
 AptoHUDDB = AptoHUDDB or {};
 
 -- Settings
-AptoHUD.debug = true
+AptoHUD.debug = false
 AptoHUD.HUD.PlayerHealthEvents = {
     "UNIT_HEALTH",
     "UNIT_MAXHEALTH",
@@ -20,7 +20,7 @@ AptoHUD.HUD.HUDAlpha = {
     combat = 0.8,
     noCombat = 0.4
 }
-AptoHUD.HUD.HUDScale = 3
+AptoHUD.HUD.HUDScale = 0.75
 AptoHUD.HUD.Textures = {
     Health = "Interface\\AddOns\\AptoHUD\\Textures\\hex-ring-512-bl",
     Power = {
