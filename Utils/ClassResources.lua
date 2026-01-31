@@ -154,7 +154,7 @@ function AptoHUD.Utils.GetPowerFromClassAndSpec(class, specID, resourceType)
     if not powerType then
         return nil, nil
     end
-    local startsAtZero = powerStartsAtZero[specData] or false
+    local startsAtZero = powerStartsAtZero[powerType] or false
     if AptoHUD.debug then
         print("GetPowerFromClassAndSpec", powerType, startsAtZero)
     end

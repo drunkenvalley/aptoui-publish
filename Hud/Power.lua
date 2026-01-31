@@ -14,9 +14,12 @@ local function GetPowerValues(unitName, resourceType)
         print("GetPowerValues unitname resourcetype", unitName, resourceType)
     end
     local powerType, startsAtZero = GetResources(resourceType)
+    if AptoHUD.debug then
+        print("GetPowerValues powerType startsAtZero", powerType, startsAtZero)
+    end
     if powerType == nil then
         return nil
-    end if
+    end
     if startsAtZero then
         curveType = CurveConstants.ZeroToOne
     else
