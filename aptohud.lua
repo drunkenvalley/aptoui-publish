@@ -4,7 +4,7 @@ local addonName, AptoHUD = ...
 AptoHUDDB = AptoHUDDB or {};
 
 -- Settings
-AptoHUD.debug = true
+AptoHUD.debug = false
 AptoHUD.HUD.PlayerHealthEvents = {
     "UNIT_HEALTH",
     "UNIT_MAXHEALTH",
