@@ -18,22 +18,32 @@ local function UpdateHealthTextureUsingPercent(unitName, textureItem)
     textureItem:SetVertexColor(perc1r, perc1, 0, perc1r)
 end
 
-
 function AptoHUD.HUD.CreateHexSegmentPlayerHP(parent, point, xOffset, yOffset)
     local frame = CreateFrame("Frame", nil, parent)
     frame:SetSize(512, 512)
     frame:SetScale(AptoHUD.HUD.HUDScale)
     frame:SetPoint(point, parent, point, xOffset, yOffset)
+    frame:SetAlpha(AptoHUD.HUD.HUDAlpha.noCombat)
 
-    local fill = frame:CreateTexture(nil, "ARTWORK")
+    local maskBorder = frame:CreateMaskTexture()
+    maskBorder:SetTexture(AptoHUD.HUD.Textures.HexBottomLeftBorder, "CLAMPTOBLACKADDITIVE", "CLAMPTOBLACKADDITIVE")
+    maskBorder:SetAllPoints()
+
+    local border = frame:CreateTexture(nil, "ARTWORK", nil, 0)
+    border:SetColorTexture(0, 0, 0, 1)
+    border:AddMaskTexture(maskBorder)
+    border:SetAllPoints()
+    border:Show()
+    border:SetVertexColor(0, 0, 0, 1)
+
+    local maskFill = frame:CreateMaskTexture()
+    maskFill:SetTexture(AptoHUD.HUD.Textures.HexBottomLeft, "CLAMPTOBLACKADDITIVE", "CLAMPTOBLACKADDITIVE")
+    maskFill:SetAllPoints()
+
+    local fill = frame:CreateTexture(nil, "ARTWORK", nil, 1)
     fill:SetColorTexture(1, 1, 1, AptoHUD.HUD.HUDAlpha.noCombat)
     fill:SetAllPoints()
-
-    local mask = frame:CreateMaskTexture()
-    mask:SetTexture(AptoHUD.HUD.Textures.Health, "CLAMPTOBLACKADDITIVE", "CLAMPTOBLACKADDITIVE")
-    mask:SetAllPoints()
-
-    fill:AddMaskTexture(mask)
+    fill:AddMaskTexture(maskFill)
 
     local unitName = "player"
     UpdateHealthTextureUsingPercent(unitName, fill)
@@ -43,9 +53,9 @@ function AptoHUD.HUD.CreateHexSegmentPlayerHP(parent, point, xOffset, yOffset)
             UpdateHealthTextureUsingPercent(unitName, fill)
         end
         if event == "PLAYER_REGEN_DISABLED" then
-            fill:SetColorTexture(1, 1, 1, AptoHUD.HUD.HUDAlpha.combat)
+            frame:SetAlpha(AptoHUD.HUD.HUDAlpha.combat)
         elseif event == "PLAYER_REGEN_ENABLED" then
-            fill:SetColorTexture(1, 1, 1, AptoHUD.HUD.HUDAlpha.noCombat)
+            frame:SetAlpha(AptoHUD.HUD.HUDAlpha.noCombat)
         end
     end)
 

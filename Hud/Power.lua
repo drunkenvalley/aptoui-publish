@@ -49,18 +49,32 @@ local function UpdatePowerTextureUsingPercent(unitName, textureItem, getFuncType
     textureItem:SetVertexColor(r, g, b, perc1)
 end
 
-function AptoHUD.HUD.CreateHexSegmentPlayerPower(parent, point, xOffset, yOffset, resourceType)
+function AptoHUD.HUD.CreateHexSegmentPlayerPower(
+    parent, point, xOffset, yOffset, resourceType, texturePath, textureBorderPath
+)
     local frame = CreateFrame("Frame", nil, parent)
     frame:SetSize(512, 512)
     frame:SetScale(AptoHUD.HUD.HUDScale)
     frame:SetPoint(point, parent, point, xOffset, yOffset)
+    frame:SetAlpha(AptoHUD.HUD.HUDAlpha.noCombat)
+
+    local maskBorder = frame:CreateMaskTexture()
+    maskBorder:SetTexture(textureBorderPath, "CLAMPTOBLACKADDITIVE", "CLAMPTOBLACKADDITIVE")
+    maskBorder:SetAllPoints()
+
+    local border = frame:CreateTexture(nil, "ARTWORK", nil, 0)
+    border:SetColorTexture(0, 0, 0, 1)
+    border:AddMaskTexture(maskBorder)
+    border:SetAllPoints()
+    border:Show()
+    border:SetVertexColor(0, 0, 0, 1)
 
     local fill = frame:CreateTexture(nil, "ARTWORK")
     fill:SetColorTexture(1, 1, 1, AptoHUD.HUD.HUDAlpha.noCombat)
     fill:SetAllPoints()
 
     local mask = frame:CreateMaskTexture()
-    local maskTexture = AptoHUD.HUD.Textures.Power[resourceType]
+    local maskTexture = texturePath
     mask:SetTexture(maskTexture, "CLAMPTOBLACKADDITIVE", "CLAMPTOBLACKADDITIVE")
     mask:SetAllPoints()
 
@@ -75,9 +89,9 @@ function AptoHUD.HUD.CreateHexSegmentPlayerPower(parent, point, xOffset, yOffset
             UpdatePowerTextureUsingPercent(unitName, fill, GetPowerValues, r, g, b, resourceType)
         end
         if event == "PLAYER_REGEN_DISABLED" then
-            fill:SetColorTexture(1, 1, 1, AptoHUD.HUD.HUDAlpha.combat)
+            frame:SetAlpha(AptoHUD.HUD.HUDAlpha.combat)
         elseif event == "PLAYER_REGEN_ENABLED" then
-            fill:SetColorTexture(1, 1, 1, AptoHUD.HUD.HUDAlpha.noCombat)
+            frame:SetAlpha(AptoHUD.HUD.HUDAlpha.noCombat)
         end
     end)
 
