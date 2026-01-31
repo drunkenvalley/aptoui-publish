@@ -32,14 +32,3 @@ AptoHUD.WOW.PowerTypes = {
     { Name = "ShadowOrbs", Type = "PowerType", EnumValue = 28 },
     { Name = "RuneChromatic", Type = "PowerType", EnumValue = 29 },
 }
-
-AptoHUD.WOW.ClassToSpecIDToPower = {}
-
-for specID, formatString in pairs(AptoHUD.WOW.SPEC_FORMAT_STRINGS) do
-    local class, spec = formatString:match("([^%-]+)%-(.+)")
-
-    if class and spec then
-        AptoHUD.WOW.SpecIDToClassAndSpec[class] = AptoHUD.WOW.SpecIDToClassAndSpec[class] or {}
-        AptoHUD.WOW.SpecIDToClassAndSpec[class][spec] = specID
-    end
-end
