@@ -2,11 +2,10 @@ local addonName, AptoHUD = ...
 
 -- ----- Power System
 
--- resourceType is an integer between 1 and 3 for primary, secondary, or tertiary resource type
 local function GetResources(resourceType)
     local class = AptoHUD.Utils.GetPlayerClass()
     local spec, specID = AptoHUD.Utils.GetPlayerSpec()
-    local primary, primaryStartsAtZero, secondary, secondaryStartsAtZero = AptoHUD.Resources.PowerFromClassAndSpec(class, specID)
+    local primary, primaryStartsAtZero, secondary, secondaryStartsAtZero = AptoHUD.Utils.GetPowerFromClassAndSpec(class, specID)
     if resourceType == "primary" then
         return primary, primaryStartsAtZero
     elseif resourceType == "secondary" then
@@ -17,7 +16,7 @@ end
 
 -- Get secret power values
 local function GetPowerValues(unitName, resourceType)
-    local powerType = GetResources(resourceType, startsAtZero)
+    local powerType, startsAtZero = GetResources(resourceType)
     if startsAtZero then
         curveType = CurveConstants.ZeroToOne
     else
@@ -64,9 +63,9 @@ function AptoHUD.HUD.CreateHexSegmentPlayerPower(parent, point, xOffset, yOffset
             UpdatePowerTextureUsingPercent(unitName, fill, GetPowerValues, r, g, b, resourceType)
         end
         if event == "PLAYER_REGEN_DISABLED" then
-            fill:SetColorTexture(1, 1, 1, AptoHUD.HUD.HUDAlpha.noCombat)
-        elseif event == "PLAYER_REGEN_ENABLED" then
             fill:SetColorTexture(1, 1, 1, AptoHUD.HUD.HUDAlpha.combat)
+        elseif event == "PLAYER_REGEN_ENABLED" then
+            fill:SetColorTexture(1, 1, 1, AptoHUD.HUD.HUDAlpha.noCombat)
         end
     end)
 

@@ -35,18 +35,14 @@ frame:RegisterEvent("PLAYER_LOGIN");
 
 frame:SetScript("OnEvent", function(self, event)
     if event == "PLAYER_LOGIN" then
-        print("AptoHUD loaded");
+        PlayerFrame:UnregisterAllEvents()
+        PlayerFrame:Hide()
 
         AptoHUDDB.playerName = UnitName("player");
-        print("Hello,", AptoHUDDB.playerName);
-        print(AptoHUD.Utils.GetPlayerClass())
-        print(AptoHUD.Utils.GetClassColour())
-        local playerSpec, playerSpecID = AptoHUD.Utils.GetPlayerSpec()
-        print(playerSpec, playerSpecID)
-        print(AptoHUD.WOW.SPEC_FORMAT_STRINGS[playerSpecID])
+        print("AptoHUD loaded. Hello,", AptoHUDDB.playerName);
+
+        AptoHUD.HUD.CreateHexSegmentPlayerHP(UIParent, "CENTER", 0, 0)
+        AptoHUD.HUD.CreateHexSegmentPlayerPower(UIParent, "CENTER", 0, 0, "primary")
+        AptoHUD.HUD.CreateHexSegmentPlayerPower(UIParent, "CENTER", 0, 0, "secondary")
     end
 end);
-
--- Load HUD
-AptoHUD.HUD.CreateHexSegmentPlayerHP(UIParent, "CENTER", 0, 0)
-AptoHUD.HUD.CreateHexSegmentPlayerPower(UIParent, "CENTER", 0, 0)

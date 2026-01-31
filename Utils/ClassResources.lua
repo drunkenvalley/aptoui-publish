@@ -156,7 +156,8 @@ local function IsStartsAtZero(powerName)
 end
 
 -- Gets the power type ID from a lookup, based on the class and spec ID
-function AptoHUD.Resources.PowerFromClassAndSpec(class, specID)
+function AptoHUD.Utils.GetPowerFromClassAndSpec(class, specID)
+    local class = class:lower()
     local specData = PowerLookup[class] and PowerLookup[class][specID]
     if not specData then
         return nil, nil
