@@ -4,6 +4,7 @@ local addonName, AptoHUD = ...
 AptoHUDDB = AptoHUDDB or {};
 
 -- Settings
+AptoHUD.debug = true
 AptoHUD.HUD.PlayerHealthEvents = {
     "UNIT_HEALTH",
     "UNIT_MAXHEALTH",
@@ -35,8 +36,8 @@ frame:RegisterEvent("PLAYER_LOGIN");
 
 frame:SetScript("OnEvent", function(self, event)
     if event == "PLAYER_LOGIN" then
-        PlayerFrame:UnregisterAllEvents()
-        PlayerFrame:Hide()
+        -- PlayerFrame:UnregisterAllEvents()
+        -- PlayerFrame:Hide()
 
         AptoHUDDB.playerName = UnitName("player");
         print("AptoHUD loaded. Hello,", AptoHUDDB.playerName);

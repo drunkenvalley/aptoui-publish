@@ -16,6 +16,9 @@ end
 
 -- Get secret power values
 local function GetPowerValues(unitName, resourceType)
+    if AptoHUD.debug then
+        print("GetPowerValues unitname resourcetype", unitName, resourceType)
+    end
     local powerType, startsAtZero = GetResources(resourceType)
     if startsAtZero then
         curveType = CurveConstants.ZeroToOne
@@ -23,12 +26,21 @@ local function GetPowerValues(unitName, resourceType)
         curveType = CurveConstants.Reverse
     end
     local perc1 = UnitPowerPercent(unitName, powerType, false, curveType)
+    if AptoHUD.debug then
+        print("GetPowerValues resourcetype perc1", resourceType, perc1)
+    end
     return perc1
 end
 
 -- Updates the mask based on power values
 local function UpdatePowerTextureUsingPercent(unitName, textureItem, getFuncType, r, g, b, resourceType)
+    if AptoHUD.debug then
+        print("UpdatePowerTextureUsingPercent", unitName, textureItem, getFuncType, r, g, b, resourceType)
+    end
     local perc1 = GetPowerValues(unitName, resourceType)
+    if AptoHUD.debug then
+        print("UpdatePowerTextureUsingPercent", perc1)
+    end
     if not perc1 then
         textureItem:Hide()
         return
@@ -74,6 +86,6 @@ function AptoHUD.HUD.CreateHexSegmentPlayerPower(parent, point, xOffset, yOffset
         frame:RegisterEvent(eventName)
     end
 
-    UpdatePowerTextureUsingPercent(unitName, fill, GetPowerValues, r, g, b)
+    UpdatePowerTextureUsingPercent(unitName, fill, GetPowerValues, r, g, b, resourceType)
     return frame
 end

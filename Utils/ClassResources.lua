@@ -2,31 +2,33 @@ local addonName, AptoHUD = ...
 
 -- Todo: Consider tracking things like Whirlwind charges for Warrior, or Stagger for Brewmaster?
 
-local power_mana = { primary = "Mana" }
-local power_energy = { primary = "Energy" }
-local power_rage = { primary = "Rage" }
+-- Enum.PowerType is a built-in Blizzard system for looking up these types
 
-local power_dk = { primary = "RunicPower" , secondary = "Runes" }
-local power_dh = { primary = "Fury" }
-local power_evoker = { primary = "Mana", secondary = "Essence" }
-local power_hunter = { primary = "Focus" }
+local power_mana = { primary = Enum.PowerType.Mana }
+local power_energy = { primary = Enum.PowerType.Energy }
+local power_rage = { primary = Enum.PowerType.Rage }
+
+local power_dk = { primary = Enum.PowerType.RunicPower , secondary = Enum.PowerType.Runes }
+local power_dh = { primary = Enum.PowerType.Fury }
+local power_evoker = { primary = Enum.PowerType.Mana, secondary = Enum.PowerType.Essence }
+local power_hunter = { primary = Enum.PowerType.Focus }
 local power_mage = power_mana
-local power_paladin = { primary = "Mana", secondary = "HolyPower" }
+local power_paladin = { primary = Enum.PowerType.Mana, secondary = Enum.PowerType.HolyPower }
 local power_priest = power_mana
-local power_rogue = { primary = "Energy" , secondary = "ComboPoints" }
+local power_rogue = { primary = Enum.PowerType.Energy , secondary = Enum.PowerType.ComboPoints }
 local power_shaman = power_mana
 local power_warlock = power_mana
 local power_warrior = power_rage
 
 local powerStartsAtZeroList = {
-    "Rage",
-    "RunicPower",
-    "HolyPower",
-    "ComboPoints",
-    "Fury",
-    "ArcaneCharges",
-    "Insanity",
-    "Maelstrom",
+    Enum.PowerType.Rage,
+    Enum.PowerType.RunicPower,
+    Enum.PowerType.HolyPower,
+    Enum.PowerType.ComboPoints,
+    Enum.PowerType.Fury,
+    Enum.PowerType.ArcaneCharges,
+    Enum.PowerType.Insanity,
+    Enum.PowerType.Maelstrom,
 }
 local powerStartsAtZero = {}
 for _, name in ipairs(powerStartsAtZeroList) do
@@ -53,9 +55,9 @@ local PowerLookup = {
     },
     druid = {
         -- balance
-        [102] = { primary = "Mana", secondary = "LunarPower" },
+        [102] = { primary = Enum.PowerType.Mana, secondary = Enum.PowerType.LunarPower },
         -- feral
-        [103] = { primary = "Energy", secondary = "ComboPoints" },
+        [103] = { primary = Enum.PowerType.Energy, secondary = Enum.PowerType.ComboPoints },
         -- guardian
         [104] = power_rage,
         -- resto
@@ -79,7 +81,7 @@ local PowerLookup = {
     },
     mage = {
         -- Arcane
-        [62] = { primary = "Mana", secondary = "ArcaneCharges" },
+        [62] = { primary = Enum.PowerType.Mana, secondary = Enum.PowerType.ArcaneCharges },
         -- Fire
         [63] = power_mage,
         -- Frost
@@ -87,11 +89,11 @@ local PowerLookup = {
     },
     monk = {
         -- Brewmaster
-        [268] = { primary = "Energy" },
+        [268] = { primary = Enum.PowerType.Energy },
         -- Mistweaver
         [270] = power_mana,
         -- Windwalker
-        [269] = { primary = "Energy", secondary = "Chi" }
+        [269] = { primary = Enum.PowerType.Energy, secondary = Enum.PowerType.Chi }
     },
     paladin = {
         -- Holy
@@ -107,7 +109,7 @@ local PowerLookup = {
         -- Holy
         [257] = power_priest,
         -- Shadow
-        [258] = { primary = "Mana", secondary = "Insanity" }
+        [258] = { primary = Enum.PowerType.Mana, secondary = Enum.PowerType.Insanity }
     },
     rogue = {
         -- Assassination
@@ -119,7 +121,7 @@ local PowerLookup = {
     },
     shaman = {
         -- Elemental
-        [262] = { primary = "Mana", secondary = "Maelstrom" },
+        [262] = { primary = Enum.PowerType.Mana, secondary = Enum.PowerType.Maelstrom },
         -- Enhancement
         [263] = power_shaman,
         -- Resto
@@ -143,18 +145,6 @@ local PowerLookup = {
     }
 }
 
-local function GetPowerID(powerName)
-    for _, entry in ipairs(AptoHUD.WOW.PowerTypes) do
-        if entry.Name == powerName then
-            return entry.EnumValue
-        end
-    end
-end
-
-local function IsStartsAtZero(powerName)
-    return powerStartsAtZero[powerName] or false
-end
-
 -- Gets the power type ID from a lookup, based on the class and spec ID
 function AptoHUD.Utils.GetPowerFromClassAndSpec(class, specID)
     local class = class:lower()
@@ -163,10 +153,15 @@ function AptoHUD.Utils.GetPowerFromClassAndSpec(class, specID)
         return nil, nil
     end
 
-    local primary   = GetPowerID(specData.primary)
-    local primaryStartsAtZero = IsStartsAtZero(specData.primary)
-    local secondary = specData.secondary and GetPowerID(specData.secondary) or nil
-    local secondaryStartsAtZero = IsStartsAtZero(specData.secondary)
+    local primaryStartsAtZero = powerStartsAtZero[specData.primary] or false
+    local secondaryStartsAtZero = powerStartsAtZero[specData.secondary] or false
 
-    return primary, primaryStartsAtZero, secondary, secondaryStartsAtZero
+    if AptoHUD.debug then
+        print(
+            "GetPowerFromClassAndSpec",
+            specData.primary, primaryStartsAtZero,
+            specData.secondary, secondaryStartsAtZero
+        )
+    end
+    return specData.primary, primaryStartsAtZero, specData.secondary, secondaryStartsAtZero
 end
