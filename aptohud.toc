@@ -11,6 +11,7 @@ WowLookups/ClassSpecs.lua
 WowLookups/PowerTypes.lua
 Utils/ClassResources.lua
 Utils/PlayerData.lua
+Hud/Geometry.lua
 Hud/Borders.lua
 Hud/Health.lua
 Hud/Power.lua

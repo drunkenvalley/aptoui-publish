@@ -16,48 +16,6 @@ AptoHUD.HUD.PlayerPowerEvents = {
     "PLAYER_REGEN_DISABLED",
     "PLAYER_REGEN_ENABLED",
 }
-AptoHUD.HUD.Scale = {
-    Main = 1,
-    Grid = 1,
-}
-AptoHUD.HUD.Size = {
-    Main = 512,
-    Grid = 64
-}
-
-AptoHUD.HUD.Offset = {
-    MainX = 0,
-    MainY = 0,
-}
-
--- this is based on the specific drawn textures, using top right point coords vs centre point
-local HexInsidePoints = {
-    Top = { X = 210, Y = 0 },
-    Side = { X = 180, Y = 107 },
-}
-
-local GridOffsetBuffer = 0
-AptoHUD.HUD.Offset.GridX = (
-    AptoHUD.HUD.Offset.MainX
-    + HexInsidePoints.Side.X
-    -- + HexInsideOffsets.Main.Side.X
-    -- - AptoHUD.HUD.Size.Grid * HexWidthFactor * AptoHUD.HUD.Scale.Grid / 2
-    - GridOffsetBuffer
-)
-AptoHUD.HUD.Offset.GridY = (
-    AptoHUD.HUD.Offset.MainY
-    + HexInsidePoints.Side.Y
-    -- + HexInsideOffsets.Main.Side.Y
-    -- - AptoHUD.HUD.Size.Grid * HexHeightFactor * AptoHUD.HUD.Scale.Grid / 2
-    - GridOffsetBuffer
-)
-print(AptoHUD.HUD.Size.Grid * AptoHUD.HUD.Scale.Grid / 2)
-print(AptoHUD.HUD.Size.Grid * AptoHUD.HUD.Scale.Grid / 2)
-
-AptoHUD.HUD.SmallHexOffsets = {
-    X64 = 57,
-    Y64 = 48
-}
 AptoHUD.HUD.HUDAlpha = {
     Combat = 0.8,
     NoCombat = 0.4,
@@ -88,24 +46,24 @@ frame:SetScript("OnEvent", function(self, event)
 
         -- Health
         AptoHUD.HUD.CreateHexSegmentPlayerHP(
-            UIParent, "CENTER", AptoHUD.HUD.Offset.MainX, AptoHUD.HUD.Offset.MainY
+            UIParent, "CENTER", AptoHUD.HUD.Offset.Main.X, AptoHUD.HUD.Offset.Main.Y
         )
 
         -- Power
         AptoHUD.HUD.CreateHexSegmentPlayerPower(
-            UIParent, "CENTER", AptoHUD.HUD.Offset.MainX, AptoHUD.HUD.Offset.MainY, "primary",
+            UIParent, "CENTER", AptoHUD.HUD.Offset.Main.X, AptoHUD.HUD.Offset.Main.Y, "primary",
             AptoHUD.HUD.Textures.HexBottomRight, AptoHUD.HUD.Textures.HexBottomRightBorder
         )
         AptoHUD.HUD.CreateHexSegmentPlayerPower(
-            UIParent, "CENTER", AptoHUD.HUD.Offset.MainX, AptoHUD.HUD.Offset.MainY, "secondary",
+            UIParent, "CENTER", AptoHUD.HUD.Offset.Main.X, AptoHUD.HUD.Offset.Main.Y, "secondary",
             AptoHUD.HUD.Textures.HexTop, AptoHUD.HUD.Textures.HexTopBorder
         )
 
         -- Text elements 1
         AptoHUD.HUD.CreateHexIcon(
             UIParent, "CENTER",
-            AptoHUD.HUD.Offset.GridX,
-            AptoHUD.HUD.Offset.GridY
+            AptoHUD.HUD.Offset.Icon.X,
+            AptoHUD.HUD.Offset.Icon.Y
         )
     end
 end);

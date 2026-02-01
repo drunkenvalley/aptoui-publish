@@ -2,8 +2,8 @@ local addonName, AptoHUD = ...
 
 function AptoHUD.HUD.CreateHexIcon(parent, point, xOffset, yOffset)
     local frame = CreateFrame("Frame", nil, parent)
-    local xSize = AptoHUD.HUD.Size.Grid * AptoHUD.HUD.Scale.Grid
-    local ySize = AptoHUD.HUD.Size.Grid * AptoHUD.HUD.Scale.Grid
+    local xSize = AptoHUD.HUD.Size.Icon * AptoHUD.HUD.Scale.Icon
+    local ySize = AptoHUD.HUD.Size.Icon * AptoHUD.HUD.Scale.Icon
     frame:SetSize(xSize, ySize)
     frame:SetPoint(point, parent, point, xOffset, yOffset)
     frame:SetAlpha(AptoHUD.HUD.HUDAlpha.NoCombat)
