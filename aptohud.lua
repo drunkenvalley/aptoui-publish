@@ -71,24 +71,24 @@ frame:SetScript("OnEvent", function(self, event)
         )
 
         -- Text elements 1
-        for xOffset = 0, AptoHUD.HUD.SmallHexOffsets.x64 * 2, AptoHUD.HUD.SmallHexOffsets.x64 do
-            for yOffset = 0, AptoHUD.HUD.SmallHexOffsets.y64 * 2, AptoHUD.HUD.SmallHexOffsets.y64 * 2 do
-                AptoHUD.HUD.CreateHexTest(
-                    UIParent, "CENTER",
-                    AptoHUD.HUD.Offset.GridX + xOffset,
-                    AptoHUD.HUD.Offset.GridY + yOffset
-                )
-            end
-        end
-        for xOffset = AptoHUD.HUD.SmallHexOffsets.x64 / 2, AptoHUD.HUD.SmallHexOffsets.x64 * 2, AptoHUD.HUD.SmallHexOffsets.x64 do
-            for yOffset = AptoHUD.HUD.SmallHexOffsets.y64, AptoHUD.HUD.SmallHexOffsets.y64 * 2, AptoHUD.HUD.SmallHexOffsets.y64 * 2 do
-                AptoHUD.HUD.CreateHexTest(
-                    UIParent, "CENTER",
-                    AptoHUD.HUD.Offset.GridX + xOffset,
-                    AptoHUD.HUD.Offset.GridY + yOffset
-                )
-            end
-        end
+        -- for xOffset = 0, AptoHUD.HUD.SmallHexOffsets.x64 * 2, AptoHUD.HUD.SmallHexOffsets.x64 do
+        --     for yOffset = 0, AptoHUD.HUD.SmallHexOffsets.y64 * 2, AptoHUD.HUD.SmallHexOffsets.y64 * 2 do
+        --         AptoHUD.HUD.CreateHexTest(
+        --             UIParent, "CENTER",
+        --             AptoHUD.HUD.Offset.GridX + xOffset,
+        --             AptoHUD.HUD.Offset.GridY + yOffset
+        --         )
+        --     end
+        -- end
+        -- for xOffset = AptoHUD.HUD.SmallHexOffsets.x64 / 2, AptoHUD.HUD.SmallHexOffsets.x64 * 2, AptoHUD.HUD.SmallHexOffsets.x64 do
+        --     for yOffset = AptoHUD.HUD.SmallHexOffsets.y64, AptoHUD.HUD.SmallHexOffsets.y64 * 2, AptoHUD.HUD.SmallHexOffsets.y64 * 2 do
+        --         AptoHUD.HUD.CreateHexTest(
+        --             UIParent, "CENTER",
+        --             AptoHUD.HUD.Offset.GridX + xOffset,
+        --             AptoHUD.HUD.Offset.GridY + yOffset
+        --         )
+        --     end
+        -- end
 
         -- Test elements 2
         -- AptoHUD.HUD.CreateHexTest(
