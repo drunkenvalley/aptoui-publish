@@ -20,8 +20,9 @@ end
 
 function AptoHUD.HUD.CreateHexSegmentPlayerHP(parent, point, xOffset, yOffset)
     local frame = CreateFrame("Frame", nil, parent)
-    frame:SetSize(512, 512)
-    frame:SetScale(AptoHUD.HUD.HUDScale)
+    local xSize = AptoHUD.HUD.Size.Main * AptoHUD.HUD.Scale.Main
+    local ySize = AptoHUD.HUD.Size.Main * AptoHUD.HUD.Scale.Main
+    frame:SetSize(xSize, ySize)
     frame:SetPoint(point, parent, point, xOffset, yOffset)
     frame:SetAlpha(AptoHUD.HUD.HUDAlpha.NoCombat)
 

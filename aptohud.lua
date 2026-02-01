@@ -16,22 +16,53 @@ AptoHUD.HUD.PlayerPowerEvents = {
     "PLAYER_REGEN_DISABLED",
     "PLAYER_REGEN_ENABLED",
 }
+AptoHUD.HUD.Scale = {
+    Main = 1,
+    Grid = 1,
+}
+AptoHUD.HUD.Size = {
+    Main = 512,
+    Grid = 64
+}
+
 AptoHUD.HUD.Offset = {
     MainX = 0,
-    MainY = -50,
-    GridX = 150,
-    GridY = 0
+    MainY = 0,
 }
+
+-- this is based on the specific drawn textures, using top right point coords vs centre point
+local HexInsidePoints = {
+    Top = { X = 210, Y = 0 },
+    Side = { X = 180, Y = 107 },
+}
+
+local GridOffsetBuffer = 0
+AptoHUD.HUD.Offset.GridX = (
+    AptoHUD.HUD.Offset.MainX
+    + HexInsidePoints.Side.X
+    -- + HexInsideOffsets.Main.Side.X
+    -- - AptoHUD.HUD.Size.Grid * HexWidthFactor * AptoHUD.HUD.Scale.Grid / 2
+    - GridOffsetBuffer
+)
+AptoHUD.HUD.Offset.GridY = (
+    AptoHUD.HUD.Offset.MainY
+    + HexInsidePoints.Side.Y
+    -- + HexInsideOffsets.Main.Side.Y
+    -- - AptoHUD.HUD.Size.Grid * HexHeightFactor * AptoHUD.HUD.Scale.Grid / 2
+    - GridOffsetBuffer
+)
+print(AptoHUD.HUD.Size.Grid * AptoHUD.HUD.Scale.Grid / 2)
+print(AptoHUD.HUD.Size.Grid * AptoHUD.HUD.Scale.Grid / 2)
+
 AptoHUD.HUD.SmallHexOffsets = {
-    x64 = 57,
-    y64 = 48
+    X64 = 57,
+    Y64 = 48
 }
 AptoHUD.HUD.HUDAlpha = {
     Combat = 0.8,
     NoCombat = 0.4,
     Border = 0.5,
 }
-AptoHUD.HUD.HUDScale = 0.75
 AptoHUD.HUD.Textures = {
     HexBottomLeft = "Interface\\AddOns\\AptoHUD\\Textures\\hex-ring-512-bl",
     HexBottomLeftBorder = "Interface\\AddOns\\AptoHUD\\Textures\\hex-ring-512-bl-border",
@@ -71,63 +102,10 @@ frame:SetScript("OnEvent", function(self, event)
         )
 
         -- Text elements 1
-        -- for xOffset = 0, AptoHUD.HUD.SmallHexOffsets.x64 * 2, AptoHUD.HUD.SmallHexOffsets.x64 do
-        --     for yOffset = 0, AptoHUD.HUD.SmallHexOffsets.y64 * 2, AptoHUD.HUD.SmallHexOffsets.y64 * 2 do
-        --         AptoHUD.HUD.CreateHexTest(
-        --             UIParent, "CENTER",
-        --             AptoHUD.HUD.Offset.GridX + xOffset,
-        --             AptoHUD.HUD.Offset.GridY + yOffset
-        --         )
-        --     end
-        -- end
-        -- for xOffset = AptoHUD.HUD.SmallHexOffsets.x64 / 2, AptoHUD.HUD.SmallHexOffsets.x64 * 2, AptoHUD.HUD.SmallHexOffsets.x64 do
-        --     for yOffset = AptoHUD.HUD.SmallHexOffsets.y64, AptoHUD.HUD.SmallHexOffsets.y64 * 2, AptoHUD.HUD.SmallHexOffsets.y64 * 2 do
-        --         AptoHUD.HUD.CreateHexTest(
-        --             UIParent, "CENTER",
-        --             AptoHUD.HUD.Offset.GridX + xOffset,
-        --             AptoHUD.HUD.Offset.GridY + yOffset
-        --         )
-        --     end
-        -- end
-
-        -- Test elements 2
-        -- AptoHUD.HUD.CreateHexTest(
-        --     UIParent, "CENTER",
-        --     AptoHUD.HUD.Offset.x,
-        --     AptoHUD.HUD.Offset.y
-        -- )
-        -- AptoHUD.HUD.CreateHexTest(
-        --     UIParent, "CENTER",
-        --     AptoHUD.HUD.Offset.x + AptoHUD.HUD.SmallHexOffsets.x64,
-        --     AptoHUD.HUD.Offset.y
-        -- )
-        -- AptoHUD.HUD.CreateHexTest(
-        --     UIParent, "CENTER",
-        --     AptoHUD.HUD.Offset.x + AptoHUD.HUD.SmallHexOffsets.x64 / 2,
-        --     AptoHUD.HUD.Offset.y + AptoHUD.HUD.SmallHexOffsets.y64
-        -- )
+        AptoHUD.HUD.CreateHexIcon(
+            UIParent, "CENTER",
+            AptoHUD.HUD.Offset.GridX,
+            AptoHUD.HUD.Offset.GridY
+        )
     end
 end);
-
-function AptoHUD.HUD.CreateHexTest(parent, point, xOffset, yOffset)
-    local frame = CreateFrame("Frame", nil, parent)
-    frame:SetSize(64, 64)
-    frame:SetScale(0.5)
-    frame:SetPoint(point, parent, point, xOffset, yOffset)
-    frame:SetAlpha(AptoHUD.HUD.HUDAlpha.NoCombat)
-
-    local mask = frame:CreateMaskTexture()
-    local maskTexture = AptoHUD.HUD.Textures.HexSmall
-    mask:SetTexture(maskTexture, "CLAMPTOBLACKADDITIVE", "CLAMPTOBLACKADDITIVE")
-    mask:SetAllPoints()
-
-    local classColour = AptoHUD.Utils.GetClassColour()
-    local fill = frame:CreateTexture(nil, "ARTWORK")
-    fill:SetColorTexture(1, 1, 1, 1)
-    fill:SetAllPoints()
-    fill:Show()
-    fill:SetVertexColor(classColour.r, classColour.g, classColour.b, 1)
-    fill:AddMaskTexture(mask)
-
-    return frame
-end
