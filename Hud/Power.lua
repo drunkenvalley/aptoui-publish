@@ -25,19 +25,20 @@ local function GetPowerValues(unitName, resourceType)
     else
         curveType = CurveConstants.Reverse
     end
+    local r, g, b = GetPowerColor(powerType)
     local perc1 = UnitPowerPercent(unitName, powerType, false, curveType)
     if AptoHUD.debug then
         print("GetPowerValues resourcetype perc1", resourceType, perc1)
     end
-    return perc1
+    return perc1, r, g, b
 end
 
 -- Updates the mask based on power values
-local function UpdatePowerTextureUsingPercent(unitName, textureItem, getFuncType, r, g, b, resourceType)
+local function UpdatePowerTextureUsingPercent(unitName, textureItem, getFuncType, resourceType)
     if AptoHUD.debug then
         print("UpdatePowerTextureUsingPercent", unitName, textureItem, getFuncType, r, g, b, resourceType)
     end
-    local perc1 = GetPowerValues(unitName, resourceType)
+    local perc1, r, g, b = GetPowerValues(unitName, resourceType)
     if AptoHUD.debug then
         print("UpdatePowerTextureUsingPercent", perc1)
     end
@@ -79,14 +80,13 @@ function AptoHUD.HUD.CreateHexSegmentPlayerPower(
     mask:SetAllPoints()
 
     fill:AddMaskTexture(mask)
-    local r, g, b = AptoHUD.Utils.GetClassColour()
 
     local unitName = "player"
-    UpdatePowerTextureUsingPercent(unitName, fill, GetPowerValues, r, g, b, resourceType)
+    UpdatePowerTextureUsingPercent(unitName, fill, GetPowerValues, resourceType)
 
     frame:SetScript("OnEvent", function(_, event, eventUnit)
         if eventUnit == unitName then
-            UpdatePowerTextureUsingPercent(unitName, fill, GetPowerValues, r, g, b, resourceType)
+            UpdatePowerTextureUsingPercent(unitName, fill, GetPowerValues, resourceType)
         end
         if event == "PLAYER_REGEN_DISABLED" then
             frame:SetAlpha(AptoHUD.HUD.HUDAlpha.combat)
@@ -100,6 +100,6 @@ function AptoHUD.HUD.CreateHexSegmentPlayerPower(
         frame:RegisterEvent(eventName)
     end
 
-    UpdatePowerTextureUsingPercent(unitName, fill, GetPowerValues, r, g, b, resourceType)
+    UpdatePowerTextureUsingPercent(unitName, fill, GetPowerValues, resourceType)
     return frame
 end

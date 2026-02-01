@@ -3,6 +3,8 @@ local addonName, AptoHUD = ...
 -- Todo: Consider tracking things like Whirlwind charges for Warrior, or Stagger for Brewmaster?
 
 -- Enum.PowerType is a built-in Blizzard system for looking up these types
+-- Primary power types can be looked up with UnitPowerType("player")
+-- Power colours can be looked up in PowerBarColor using the Enum.PowerType value
 
 local power_mana = { primary = Enum.PowerType.Mana }
 local power_energy = { primary = Enum.PowerType.Energy }
