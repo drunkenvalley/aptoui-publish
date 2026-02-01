@@ -46,24 +46,24 @@ frame:SetScript("OnEvent", function(self, event)
 
         -- Health
         AptoHUD.HUD.CreateHexSegmentPlayerHP(
-            UIParent, "CENTER", AptoHUD.HUD.Offset.Main.X, AptoHUD.HUD.Offset.Main.Y
+            UIParent, "CENTER", AptoHUD.HUD.Offset.X, AptoHUD.HUD.Offset.Y
         )
 
         -- Power
         AptoHUD.HUD.CreateHexSegmentPlayerPower(
-            UIParent, "CENTER", AptoHUD.HUD.Offset.Main.X, AptoHUD.HUD.Offset.Main.Y, "primary",
+            UIParent, "CENTER", AptoHUD.HUD.Offset.X, AptoHUD.HUD.Offset.Y, "primary",
             AptoHUD.HUD.Textures.HexBottomRight, AptoHUD.HUD.Textures.HexBottomRightBorder
         )
         AptoHUD.HUD.CreateHexSegmentPlayerPower(
-            UIParent, "CENTER", AptoHUD.HUD.Offset.Main.X, AptoHUD.HUD.Offset.Main.Y, "secondary",
+            UIParent, "CENTER", AptoHUD.HUD.Offset.X, AptoHUD.HUD.Offset.Y, "secondary",
             AptoHUD.HUD.Textures.HexTop, AptoHUD.HUD.Textures.HexTopBorder
         )
 
-        -- Text elements 1
-        AptoHUD.HUD.CreateHexIcon(
-            UIParent, "CENTER",
-            AptoHUD.HUD.Offset.Icon.X,
-            AptoHUD.HUD.Offset.Icon.Y
-        )
+        -- Test elements 1
+        for i = 1, 6, 1 do
+            local IconX, IconY = AptoHUD.HUD.GetIconPosition(i)
+            print(IconX, IconY)
+            AptoHUD.HUD.CreateHexIcon(UIParent, "CENTER", IconX, IconY)
+        end
     end
 end);
