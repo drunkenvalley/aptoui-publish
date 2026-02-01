@@ -17,16 +17,19 @@ AptoHUD.HUD.PlayerPowerEvents = {
     "PLAYER_REGEN_ENABLED",
 }
 AptoHUD.HUD.Offset = {
-    x = 0,
-    y = -50
+    MainX = 0,
+    MainY = -50,
+    GridX = 150,
+    GridY = 0
 }
 AptoHUD.HUD.SmallHexOffsets = {
     x64 = 57,
     y64 = 48
 }
 AptoHUD.HUD.HUDAlpha = {
-    combat = 0.8,
-    noCombat = 0.4
+    Combat = 0.8,
+    NoCombat = 0.4,
+    Border = 0.5,
 }
 AptoHUD.HUD.HUDScale = 0.75
 AptoHUD.HUD.Textures = {
@@ -54,35 +57,55 @@ frame:SetScript("OnEvent", function(self, event)
 
         -- Health
         AptoHUD.HUD.CreateHexSegmentPlayerHP(
-            UIParent, "CENTER", AptoHUD.HUD.Offset.x, AptoHUD.HUD.Offset.y
+            UIParent, "CENTER", AptoHUD.HUD.Offset.MainX, AptoHUD.HUD.Offset.MainY
         )
 
         -- Power
         AptoHUD.HUD.CreateHexSegmentPlayerPower(
-            UIParent, "CENTER", AptoHUD.HUD.Offset.x, AptoHUD.HUD.Offset.y, "primary",
+            UIParent, "CENTER", AptoHUD.HUD.Offset.MainX, AptoHUD.HUD.Offset.MainY, "primary",
             AptoHUD.HUD.Textures.HexBottomRight, AptoHUD.HUD.Textures.HexBottomRightBorder
         )
         AptoHUD.HUD.CreateHexSegmentPlayerPower(
-            UIParent, "CENTER", AptoHUD.HUD.Offset.x, AptoHUD.HUD.Offset.y, "secondary",
+            UIParent, "CENTER", AptoHUD.HUD.Offset.MainX, AptoHUD.HUD.Offset.MainY, "secondary",
             AptoHUD.HUD.Textures.HexTop, AptoHUD.HUD.Textures.HexTopBorder
         )
 
-        -- Test elements
-        AptoHUD.HUD.CreateHexTest(
-            UIParent, "CENTER",
-            AptoHUD.HUD.Offset.x,
-            AptoHUD.HUD.Offset.y
-        )
-        AptoHUD.HUD.CreateHexTest(
-            UIParent, "CENTER",
-            AptoHUD.HUD.Offset.x + AptoHUD.HUD.SmallHexOffsets.x64,
-            AptoHUD.HUD.Offset.y
-        )
-        AptoHUD.HUD.CreateHexTest(
-            UIParent, "CENTER",
-            AptoHUD.HUD.Offset.x + AptoHUD.HUD.SmallHexOffsets.x64 / 2,
-            AptoHUD.HUD.Offset.y + AptoHUD.HUD.SmallHexOffsets.y64
-        )
+        -- Text elements 1
+        for xOffset = 0, AptoHUD.HUD.SmallHexOffsets.x64 * 2, AptoHUD.HUD.SmallHexOffsets.x64 do
+            for yOffset = 0, AptoHUD.HUD.SmallHexOffsets.y64 * 2, AptoHUD.HUD.SmallHexOffsets.y64 * 2 do
+                AptoHUD.HUD.CreateHexTest(
+                    UIParent, "CENTER",
+                    AptoHUD.HUD.Offset.GridX + xOffset,
+                    AptoHUD.HUD.Offset.GridY + yOffset
+                )
+            end
+        end
+        for xOffset = AptoHUD.HUD.SmallHexOffsets.x64 / 2, AptoHUD.HUD.SmallHexOffsets.x64 * 2, AptoHUD.HUD.SmallHexOffsets.x64 do
+            for yOffset = AptoHUD.HUD.SmallHexOffsets.y64, AptoHUD.HUD.SmallHexOffsets.y64 * 2, AptoHUD.HUD.SmallHexOffsets.y64 * 2 do
+                AptoHUD.HUD.CreateHexTest(
+                    UIParent, "CENTER",
+                    AptoHUD.HUD.Offset.GridX + xOffset,
+                    AptoHUD.HUD.Offset.GridY + yOffset
+                )
+            end
+        end
+
+        -- Test elements 2
+        -- AptoHUD.HUD.CreateHexTest(
+        --     UIParent, "CENTER",
+        --     AptoHUD.HUD.Offset.x,
+        --     AptoHUD.HUD.Offset.y
+        -- )
+        -- AptoHUD.HUD.CreateHexTest(
+        --     UIParent, "CENTER",
+        --     AptoHUD.HUD.Offset.x + AptoHUD.HUD.SmallHexOffsets.x64,
+        --     AptoHUD.HUD.Offset.y
+        -- )
+        -- AptoHUD.HUD.CreateHexTest(
+        --     UIParent, "CENTER",
+        --     AptoHUD.HUD.Offset.x + AptoHUD.HUD.SmallHexOffsets.x64 / 2,
+        --     AptoHUD.HUD.Offset.y + AptoHUD.HUD.SmallHexOffsets.y64
+        -- )
     end
 end);
 
@@ -91,20 +114,20 @@ function AptoHUD.HUD.CreateHexTest(parent, point, xOffset, yOffset)
     frame:SetSize(64, 64)
     frame:SetScale(0.5)
     frame:SetPoint(point, parent, point, xOffset, yOffset)
-
-    local fill = frame:CreateTexture(nil, "ARTWORK")
-    fill:SetColorTexture(1, 1, 1, AptoHUD.HUD.HUDAlpha.noCombat)
-    fill:SetAllPoints()
+    frame:SetAlpha(AptoHUD.HUD.HUDAlpha.NoCombat)
 
     local mask = frame:CreateMaskTexture()
     local maskTexture = AptoHUD.HUD.Textures.HexSmall
     mask:SetTexture(maskTexture, "CLAMPTOBLACKADDITIVE", "CLAMPTOBLACKADDITIVE")
     mask:SetAllPoints()
 
+    local classColour = AptoHUD.Utils.GetClassColour()
+    local fill = frame:CreateTexture(nil, "ARTWORK")
+    fill:SetColorTexture(1, 1, 1, 1)
+    fill:SetAllPoints()
+    fill:Show()
+    fill:SetVertexColor(classColour.r, classColour.g, classColour.b, 1)
     fill:AddMaskTexture(mask)
-    local r, g, b = AptoHUD.Utils.GetClassColour()
 
-    mask:Show()
-    mask:SetVertexColor(r, g, b, 1)
     return frame
 end

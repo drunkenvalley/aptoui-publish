@@ -7,11 +7,11 @@
 ## LoadSavedVariablesFirst: 1
 
 Core.lua
-WowLookups/ClassColours.lua
 WowLookups/ClassSpecs.lua
 WowLookups/PowerTypes.lua
 Utils/ClassResources.lua
 Utils/PlayerData.lua
+Hud/Borders.lua
 Hud/Health.lua
 Hud/Power.lua
 AptoHUD.lua

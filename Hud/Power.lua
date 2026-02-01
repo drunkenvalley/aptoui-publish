@@ -2,7 +2,7 @@ local addonName, AptoHUD = ...
 
 -- Retrieve the type of resource that counts as primary / secondary for this class/spec
 local function GetResources(resourceType)
-    local class = AptoHUD.Utils.GetPlayerClass()
+    local _, class = UnitClass("player")
     local spec, specID = AptoHUD.Utils.GetPlayerSpec()
     local powerType, startsAtZero = AptoHUD.Utils.GetPowerFromClassAndSpec(class, specID, resourceType)
     return powerType, startsAtZero
@@ -25,12 +25,12 @@ local function GetPowerValues(unitName, resourceType)
     else
         curveType = CurveConstants.Reverse
     end
-    local r, g, b = GetPowerColor(powerType)
+    local colour = PowerBarColor[powerType]
     local perc1 = UnitPowerPercent(unitName, powerType, false, curveType)
     if AptoHUD.debug then
         print("GetPowerValues resourcetype perc1", resourceType, perc1)
     end
-    return perc1, r, g, b
+    return perc1, colour.r, colour.g, colour.b
 end
 
 -- Updates the mask based on power values
@@ -57,28 +57,17 @@ function AptoHUD.HUD.CreateHexSegmentPlayerPower(
     frame:SetSize(512, 512)
     frame:SetScale(AptoHUD.HUD.HUDScale)
     frame:SetPoint(point, parent, point, xOffset, yOffset)
-    frame:SetAlpha(AptoHUD.HUD.HUDAlpha.noCombat)
+    frame:SetAlpha(AptoHUD.HUD.HUDAlpha.NoCombat)
 
-    local maskBorder = frame:CreateMaskTexture()
-    maskBorder:SetTexture(textureBorderPath, "CLAMPTOBLACKADDITIVE", "CLAMPTOBLACKADDITIVE")
-    maskBorder:SetAllPoints()
-
-    local border = frame:CreateTexture(nil, "ARTWORK", nil, 0)
-    border:SetColorTexture(0, 0, 0, 1)
-    border:AddMaskTexture(maskBorder)
-    border:SetAllPoints()
-    border:Show()
-    border:SetVertexColor(0, 0, 0, 1)
-
-    local fill = frame:CreateTexture(nil, "ARTWORK")
-    fill:SetColorTexture(1, 1, 1, AptoHUD.HUD.HUDAlpha.noCombat)
-    fill:SetAllPoints()
+    AptoHUD.HUD.CreateBorder(frame, textureBorderPath)
 
     local mask = frame:CreateMaskTexture()
-    local maskTexture = texturePath
-    mask:SetTexture(maskTexture, "CLAMPTOBLACKADDITIVE", "CLAMPTOBLACKADDITIVE")
+    mask:SetTexture(texturePath, "CLAMPTOBLACKADDITIVE", "CLAMPTOBLACKADDITIVE")
     mask:SetAllPoints()
 
+    local fill = frame:CreateTexture(nil, "ARTWORK")
+    fill:SetColorTexture(1, 1, 1, 1)
+    fill:SetAllPoints()
     fill:AddMaskTexture(mask)
 
     local unitName = "player"
@@ -89,9 +78,9 @@ function AptoHUD.HUD.CreateHexSegmentPlayerPower(
             UpdatePowerTextureUsingPercent(unitName, fill, GetPowerValues, resourceType)
         end
         if event == "PLAYER_REGEN_DISABLED" then
-            frame:SetAlpha(AptoHUD.HUD.HUDAlpha.combat)
+            frame:SetAlpha(AptoHUD.HUD.HUDAlpha.Combat)
         elseif event == "PLAYER_REGEN_ENABLED" then
-            frame:SetAlpha(AptoHUD.HUD.HUDAlpha.noCombat)
+            frame:SetAlpha(AptoHUD.HUD.HUDAlpha.NoCombat)
         end
     end)
 

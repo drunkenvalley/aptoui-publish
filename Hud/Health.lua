@@ -23,27 +23,18 @@ function AptoHUD.HUD.CreateHexSegmentPlayerHP(parent, point, xOffset, yOffset)
     frame:SetSize(512, 512)
     frame:SetScale(AptoHUD.HUD.HUDScale)
     frame:SetPoint(point, parent, point, xOffset, yOffset)
-    frame:SetAlpha(AptoHUD.HUD.HUDAlpha.noCombat)
+    frame:SetAlpha(AptoHUD.HUD.HUDAlpha.NoCombat)
 
-    local maskBorder = frame:CreateMaskTexture()
-    maskBorder:SetTexture(AptoHUD.HUD.Textures.HexBottomLeftBorder, "CLAMPTOBLACKADDITIVE", "CLAMPTOBLACKADDITIVE")
-    maskBorder:SetAllPoints()
+    AptoHUD.HUD.CreateBorder(frame, AptoHUD.HUD.Textures.HexBottomLeftBorder)
 
-    local border = frame:CreateTexture(nil, "ARTWORK", nil, 0)
-    border:SetColorTexture(0, 0, 0, 1)
-    border:AddMaskTexture(maskBorder)
-    border:SetAllPoints()
-    border:Show()
-    border:SetVertexColor(0, 0, 0, 1)
-
-    local maskFill = frame:CreateMaskTexture()
-    maskFill:SetTexture(AptoHUD.HUD.Textures.HexBottomLeft, "CLAMPTOBLACKADDITIVE", "CLAMPTOBLACKADDITIVE")
-    maskFill:SetAllPoints()
+    local mask = frame:CreateMaskTexture()
+    mask:SetTexture(AptoHUD.HUD.Textures.HexBottomLeft, "CLAMPTOBLACKADDITIVE", "CLAMPTOBLACKADDITIVE")
+    mask:SetAllPoints()
 
     local fill = frame:CreateTexture(nil, "ARTWORK", nil, 1)
-    fill:SetColorTexture(1, 1, 1, AptoHUD.HUD.HUDAlpha.noCombat)
+    fill:SetColorTexture(1, 1, 1, 1)
     fill:SetAllPoints()
-    fill:AddMaskTexture(maskFill)
+    fill:AddMaskTexture(mask)
 
     local unitName = "player"
     UpdateHealthTextureUsingPercent(unitName, fill)
@@ -53,9 +44,9 @@ function AptoHUD.HUD.CreateHexSegmentPlayerHP(parent, point, xOffset, yOffset)
             UpdateHealthTextureUsingPercent(unitName, fill)
         end
         if event == "PLAYER_REGEN_DISABLED" then
-            frame:SetAlpha(AptoHUD.HUD.HUDAlpha.combat)
+            frame:SetAlpha(AptoHUD.HUD.HUDAlpha.Combat)
         elseif event == "PLAYER_REGEN_ENABLED" then
-            frame:SetAlpha(AptoHUD.HUD.HUDAlpha.noCombat)
+            frame:SetAlpha(AptoHUD.HUD.HUDAlpha.NoCombat)
         end
     end)
 
