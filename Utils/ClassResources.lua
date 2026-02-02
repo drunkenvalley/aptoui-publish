@@ -149,11 +149,13 @@ local PowerLookup = {
     }
 }
 
--- Gets the power type ID from a lookup, based on the class and spec ID and type of power
-function AptoHUD.Utils.GetPowerFromClassAndSpec(class, specID, resourceType)
+-- Gets the power type ID from a lookup, based on the type of power
+-- resourceType in "primary", "secondary"
+function AptoHUD.Utils.GetPowerType(resourceType)
     local _, class = UnitClass("player")
     local class = class:lower()
-    local powerType = PowerLookup[class] and PowerLookup[class][specID][resourceType]
+    local specID = AptoHUD.Utils.GetPlayerSpec()
+    local powerType = PowerLookup[class][specID][resourceType] or nil
     if not powerType then
         return nil, nil
     end

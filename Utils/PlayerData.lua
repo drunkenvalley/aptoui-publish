@@ -3,7 +3,7 @@ local addonName, AptoHUD = ...
 function AptoHUD.Utils.GetPlayerSpec()
     local spec = C_SpecializationInfo.GetSpecialization()
     local specID = C_SpecializationInfo.GetSpecializationInfo(spec)
-    return spec, specID
+    return specID
 end
 
 function AptoHUD.Utils.GetClassColour()

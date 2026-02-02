@@ -9,7 +9,8 @@ local function OffsetWrapping(offsetNumber)
     return offsetNumber
 end
 
-local function CreateHexIcon(parent, point, xOffset, yOffset, iconScale)
+local function CreateHexIcon(parent, point, xOffset, yOffset, iconScale, powerType)
+    local colours = PowerBarColor[colourType] or AptoHUD.Utils.GetClassColour()
     local frame = CreateFrame("Frame", nil, parent)
     local xSize = AptoHUD.HUD.Size.Icon * iconScale
     local ySize = AptoHUD.HUD.Size.Icon * iconScale
@@ -22,18 +23,17 @@ local function CreateHexIcon(parent, point, xOffset, yOffset, iconScale)
     mask:SetTexture(maskTexture, "CLAMPTOBLACKADDITIVE", "CLAMPTOBLACKADDITIVE")
     mask:SetAllPoints()
 
-    local classColour = AptoHUD.Utils.GetClassColour()
     local fill = frame:CreateTexture(nil, "ARTWORK")
     fill:SetColorTexture(1, 1, 1, 1)
     fill:SetAllPoints()
     fill:Show()
-    fill:SetVertexColor(classColour.r, classColour.g, classColour.b, 1)
+    fill:SetVertexColor(colours.r, colours.g, colours.b, 1)
     fill:AddMaskTexture(mask)
 
     return frame
 end
 
-function AptoHUD.HUD.IconStrip(iconCount, locationNumber, isClockwise, iconScale)
+function AptoHUD.HUD.IconStrip(iconCount, locationNumber, isClockwise, iconScale, powerType)
     local iconScale = AptoHUD.HUD.GetIconChainScale(iconCount)
     local offsetNumber = OffsetWrapping(3 + locationNumber - 1)
     local offsetIterate = -1
@@ -42,13 +42,14 @@ function AptoHUD.HUD.IconStrip(iconCount, locationNumber, isClockwise, iconScale
         offsetIterate = 1
     end
     local xPosition, yPosition = AptoHUD.HUD.GetIconPosition(locationNumber, iconScale)
-    CreateHexIcon(UIParent, "CENTER", xPosition, yPosition, iconScale)
+    local frames = {}
+    frames[1] = CreateHexIcon(UIParent, "CENTER", xPosition, yPosition, iconScale, powerType)
     if iconCount > 1 then
         for i = 2, iconCount, 1 do
             local xOffset, yOffset = AptoHUD.HUD.GetIconOffset(offsetNumber, iconScale)
             xPosition = xPosition + xOffset
             yPosition = yPosition + yOffset
-            CreateHexIcon(UIParent, "CENTER", xPosition, yPosition, iconScale)
+            frames[i] = CreateHexIcon(UIParent, "CENTER", xPosition, yPosition, iconScale, powerType)
             if i % 2 == 0 then
                 offsetNumber = offsetNumber + offsetIterate
             else
@@ -57,8 +58,5 @@ function AptoHUD.HUD.IconStrip(iconCount, locationNumber, isClockwise, iconScale
             offsetNumber = OffsetWrapping(offsetNumber)
         end
     end
+    return frames
 end
-
--- Todo:
--- Use power colours instead of class colours (see Power.lua)
--- Set up discrete resources to use icons, start with combo points and runes

@@ -75,5 +75,22 @@ frame:SetScript("OnEvent", function(self, event)
         -- AptoHUD.HUD.IconStrip(3, 4, true)
         -- AptoHUD.HUD.IconStrip(4, 5, true)
         -- AptoHUD.HUD.IconStrip(6, 6, false)
+
+        -- local frame = CreateFrame("Frame", nil, parent)
+        -- frame:SetScript("OnEvent", function(_, event, eventUnit)
+        --     if eventUnit == "player" then
+        --         local resources = AptoHUD.Resources.GetResourceCounts()
+        --         for powerType, powerInfo in pairs(resources) do
+        --             if type(powerInfo) == "table" then
+        --                 for powerCount, powerMax in pairs(powerInfo) do
+        --                     print(powerType, powerCount, powerMax)
+        --                 end
+        --             else
+        --                 print(powerType, powerTable)
+        --             end
+        --         end
+        --     end
+        -- end)
+        -- frame:RegisterEvent("UNIT_POWER_UPDATE")
     end
 end);

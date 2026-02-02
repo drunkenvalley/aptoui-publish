@@ -123,7 +123,5 @@ function AptoHUD.HUD.GetIconChainScale(iconCount)
     local maxScale = AptoHUD.HUD.Scale.Icon
     local mainScale = AptoHUD.HUD.Scale.Main
     local chainToHexInsideRatio = HexInsideLength / GetIconChainLength(iconCount)
-    -- needs adjusting by the offset distance
-    print(maxScale, GetIconChainLength(iconCount), HexInsideLength, chainToHexInsideRatio)
     return min(maxScale, chainToHexInsideRatio)
 end
