@@ -9,10 +9,12 @@ local addonName, AptoHUD = ...
 local power_colour_overwrite = {
     [Enum.PowerType.ComboPoints] = { r = 1, g = 0, b = 0 },
     rogue_charged = { r = 0, g = 0, b = 1 },
+    dk_runes = { r = 1, g = 1, b = 1 },
+    [Enum.PowerType.Essence] = { r = 1, }
 }
 local power_additional_events = {
     [Enum.PowerType.ComboPoints] = {
-        "UNIT_POWER_POINT_CHANGE",
+        "UNIT_POWER_POINT_CHARGE",
         "UNIT_POWER_FREQUENT",
     },
     dk_runes = {
