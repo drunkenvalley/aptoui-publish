@@ -99,14 +99,14 @@ end
 -- GetRuneCooldown is Blizzard function
 local function GetRuneOffCooldownCount()
     local maxRunes = UnitPowerMax("player", Enum.PowerType.Runes)
-    local current = 0
+    local currentRunes = 0
     for i = 1, maxRunes do
         local start, duration, available = GetRuneCooldown(i)
         if available then
-            current = current + 1
+            currentRunes = currentRunes + 1
         end
     end
-    return current, maxRunes
+    return currentRunes, maxRunes
 end
 
 -- Supercharged combo points have their own system
@@ -181,7 +181,7 @@ function AptoHUD.HUD.ResourceIcons(resourceType)
         UpdatePowerTextureUsingCount(iconNumber, unitName, fill, resourceType)
 
         frame:SetScript("OnEvent", function(_, event, eventUnit)
-            if eventUnit == unitName then
+            if eventUnit == unitName or event == "RUNE_POWER_UPDATE" or event == "RUNE_TYPE_UPDATE" then
                 UpdatePowerTextureUsingCount(iconNumber, unitName, fill, resourceType)
             end
             if event == "PLAYER_REGEN_DISABLED" then
@@ -191,8 +191,12 @@ function AptoHUD.HUD.ResourceIcons(resourceType)
             end
         end)
 
-        local regEvents = AptoHUD.HUD.PlayerPowerEvents
-        for _, eventName in ipairs(regEvents) do
+        local genericEvents = AptoHUD.HUD.PlayerPowerEvents
+        local specificEvents = AptoHUD.Utils.GetPowerEvents(GetResources(resourceType))
+        for _, eventName in ipairs(genericEvents) do
+            frame:RegisterEvent(eventName)
+        end
+        for _, eventName in ipairs(specificEvents) do
             frame:RegisterEvent(eventName)
         end
 

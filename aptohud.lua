@@ -10,16 +10,19 @@ AptoHUD.HUD.PlayerHealthEvents = {
     "UNIT_MAXHEALTH",
     "PLAYER_REGEN_DISABLED",
     "PLAYER_REGEN_ENABLED",
+    "PLAYER_TARGET_CHANGED",
 }
 AptoHUD.HUD.PlayerPowerEvents = {
     "UNIT_POWER_UPDATE",
     "PLAYER_REGEN_DISABLED",
     "PLAYER_REGEN_ENABLED",
+    "UNIT_MAXPOWER",
+    "PLAYER_TARGET_CHANGED",
 }
 AptoHUD.HUD.HUDAlpha = {
-    Combat = 0.8,
-    NoCombat = 0.4,
-    Border = 0.5,
+    Combat = 0.6,
+    NoCombat = 0.3,
+    Border = 0.75,
     Icon = 1,
 }
 AptoHUD.HUD.Textures = {
@@ -32,7 +35,7 @@ AptoHUD.HUD.Textures = {
     HexSmall = "Interface\\AddOns\\AptoHUD\\Textures\\hex-ring-64",
 }
 
--- ----- Initial setup
+-- ----- Apply HUD
 
 local frame = CreateFrame("Frame");
 frame:RegisterEvent("PLAYER_LOGIN");
@@ -59,7 +62,11 @@ frame:SetScript("OnEvent", function(self, event)
         --     AptoHUD.HUD.Textures.HexTop,
         --     AptoHUD.HUD.Textures.HexTopBorder
         -- )
-        AptoHUD.HUD.ResourceIcons("secondary")
-        AptoHUD.HUD.ResourceIcons("rogue_charged")
+        local resources = AptoHUD.Utils.GetResourceTypes()
+        for resourceType, _ in pairs(resources) do
+            if resourceType ~= "primary" then
+                AptoHUD.HUD.ResourceIcons(resourceType)
+            end
+        end
     end
 end);

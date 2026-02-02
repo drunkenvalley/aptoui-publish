@@ -8,14 +8,24 @@ local addonName, AptoHUD = ...
 
 local power_colour_overwrite = {
     [Enum.PowerType.ComboPoints] = { r = 1, g = 0, b = 0 },
-    rogue_charged = { r = 0, g = 0, b = 1 }
+    rogue_charged = { r = 0, g = 0, b = 1 },
+}
+local power_additional_events = {
+    [Enum.PowerType.ComboPoints] = {
+        "UNIT_POWER_POINT_CHANGE",
+        "UNIT_POWER_FREQUENT",
+    },
+    dk_runes = {
+        "RUNE_POWER_UPDATE",
+        "RUNE_TYPE_UPDATE",
+    }
 }
 
 local power_mana = { primary = Enum.PowerType.Mana }
 local power_energy = { primary = Enum.PowerType.Energy }
 local power_rage = { primary = Enum.PowerType.Rage }
 
-local power_dk = { primary = Enum.PowerType.RunicPower, secondary = "dk_runes" }
+local power_dk = { primary = Enum.PowerType.RunicPower, dk_runes = "dk_runes" }
 local power_dh = { primary = Enum.PowerType.Fury }
 local power_evoker = { primary = Enum.PowerType.Mana, secondary = Enum.PowerType.Essence }
 local power_hunter = { primary = Enum.PowerType.Focus }
@@ -156,13 +166,23 @@ local PowerLookup = {
     }
 }
 
--- Gets the power type ID from a lookup, based on the type of power
--- resourceType in "primary", "secondary"
-function AptoHUD.Utils.GetPowerType(resourceType)
+local function GetClassAndSpec()
     local _, class = UnitClass("player")
     local class = class:lower()
     local specID = AptoHUD.Utils.GetPlayerSpec()
-    local powerType = PowerLookup[class][specID][resourceType] or nil
+    return class, specID
+end
+
+function AptoHUD.Utils.GetResourceTypes()
+    local class, specID = GetClassAndSpec()
+    return PowerLookup[class][specID]
+end
+
+-- Gets the power type ID from a lookup, based on the type of power
+-- resourceType in "primary", "secondary"
+function AptoHUD.Utils.GetPowerType(resourceType)
+    local resources = AptoHUD.Utils.GetResourceTypes()
+    local powerType = resources[resourceType] or nil
     if not powerType then
         return nil, nil
     end
@@ -175,4 +195,8 @@ end
 
 function AptoHUD.Utils.GetPowerColour(powerType)
     return power_colour_overwrite[powerType] or PowerBarColor[powerType] or {r = 1, g = 1, b = 1}
+end
+
+function AptoHUD.Utils.GetPowerEvents(powerType)
+    return power_additional_events[powerType] or {}
 end
