@@ -68,5 +68,12 @@ frame:SetScript("OnEvent", function(self, event)
         --         AptoHUD.HUD.CreateHexIcon(UIParent, "CENTER", IconX + IconOffsetX, IconY + IconOffsetY)
         --     end
         -- end
+        -- AptoHUD.HUD.IconStrip(5, 1, true)
+        -- AptoHUD.HUD.IconStrip(3, 1, false)
+        -- AptoHUD.HUD.IconStrip(7, 2, true)
+        AptoHUD.HUD.IconStrip(7, 3, false)
+        -- AptoHUD.HUD.IconStrip(3, 4, true)
+        -- AptoHUD.HUD.IconStrip(4, 5, true)
+        -- AptoHUD.HUD.IconStrip(6, 6, false)
     end
 end);
