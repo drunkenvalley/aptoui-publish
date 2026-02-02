@@ -45,19 +45,21 @@ frame:SetScript("OnEvent", function(self, event)
         print("AptoHUD loaded. Hello,", AptoHUDDB.playerName);
 
         -- Health
-        AptoHUD.HUD.CreateHexSegmentPlayerHP(
-            UIParent, "CENTER", AptoHUD.HUD.Offset.X, AptoHUD.HUD.Offset.Y
-        )
+        AptoHUD.HUD.CreateHexSegmentPlayerHP()
 
         -- Power
         AptoHUD.HUD.CreateHexSegmentPlayerPower(
-            UIParent, "CENTER", AptoHUD.HUD.Offset.X, AptoHUD.HUD.Offset.Y, "primary",
-            AptoHUD.HUD.Textures.HexBottomRight, AptoHUD.HUD.Textures.HexBottomRightBorder
+            "primary",
+            AptoHUD.HUD.Textures.HexBottomRight,
+            AptoHUD.HUD.Textures.HexBottomRightBorder
         )
         AptoHUD.HUD.CreateHexSegmentPlayerPower(
-            UIParent, "CENTER", AptoHUD.HUD.Offset.X, AptoHUD.HUD.Offset.Y, "secondary",
-            AptoHUD.HUD.Textures.HexTop, AptoHUD.HUD.Textures.HexTopBorder
+            "secondary",
+            AptoHUD.HUD.Textures.HexTop,
+            AptoHUD.HUD.Textures.HexTopBorder
         )
+        AptoHUD.HUD.ResourceIcons("secondary")
+        AptoHUD.HUD.ResourceIcons("rogue_charged")
 
         -- Test elements 1
         -- for i = 1, 6, 1 do
@@ -71,26 +73,9 @@ frame:SetScript("OnEvent", function(self, event)
         -- AptoHUD.HUD.IconStrip(5, 1, true)
         -- AptoHUD.HUD.IconStrip(3, 1, false)
         -- AptoHUD.HUD.IconStrip(7, 2, true)
-        AptoHUD.HUD.IconStrip(7, 3, false)
+        -- AptoHUD.HUD.IconStrip(7, 3, false, "secondary")
         -- AptoHUD.HUD.IconStrip(3, 4, true)
         -- AptoHUD.HUD.IconStrip(4, 5, true)
         -- AptoHUD.HUD.IconStrip(6, 6, false)
-
-        -- local frame = CreateFrame("Frame", nil, parent)
-        -- frame:SetScript("OnEvent", function(_, event, eventUnit)
-        --     if eventUnit == "player" then
-        --         local resources = AptoHUD.Resources.GetResourceCounts()
-        --         for powerType, powerInfo in pairs(resources) do
-        --             if type(powerInfo) == "table" then
-        --                 for powerCount, powerMax in pairs(powerInfo) do
-        --                     print(powerType, powerCount, powerMax)
-        --                 end
-        --             else
-        --                 print(powerType, powerTable)
-        --             end
-        --         end
-        --     end
-        -- end)
-        -- frame:RegisterEvent("UNIT_POWER_UPDATE")
     end
 end);

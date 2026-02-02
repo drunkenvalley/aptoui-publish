@@ -12,14 +12,18 @@ local power_rage = { primary = Enum.PowerType.Rage }
 
 -- local power_dk = { primary = Enum.PowerType.RunicPower , secondary = Enum.PowerType.Runes }
 -- disabling runes for DK for now because
-local power_dk = { primary = Enum.PowerType.RunicPower }
+local power_dk = { primary = Enum.PowerType.RunicPower, secondary = "dk_runes" }
 local power_dh = { primary = Enum.PowerType.Fury }
 local power_evoker = { primary = Enum.PowerType.Mana, secondary = Enum.PowerType.Essence }
 local power_hunter = { primary = Enum.PowerType.Focus }
 local power_mage = power_mana
 local power_paladin = { primary = Enum.PowerType.Mana, secondary = Enum.PowerType.HolyPower }
 local power_priest = power_mana
-local power_rogue = { primary = Enum.PowerType.Energy , secondary = Enum.PowerType.ComboPoints }
+local power_rogue = {
+    primary = Enum.PowerType.Energy,
+    secondary = Enum.PowerType.ComboPoints,
+    rogue_charged = "rogue_charged",
+}
 local power_shaman = power_mana
 local power_warlock = power_mana
 local power_warrior = power_rage

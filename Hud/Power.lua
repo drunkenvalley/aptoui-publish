@@ -36,10 +36,7 @@ end
 
 -- Updates the mask based on power values
 -- PowerBarColor is a Blizzard lookup
-local function UpdatePowerTextureUsingPercent(unitName, textureItem, getFuncType, resourceType)
-    if AptoHUD.debug then
-        print("UpdatePowerTextureUsingPercent", unitName, textureItem, getFuncType, r, g, b, resourceType)
-    end
+local function UpdatePowerTextureUsingPercent(unitName, textureItem, resourceType)
     local powerType = GetResources(resourceType)
     local colour = PowerBarColor[powerType] or {r = 1, g = 1, b = 1}
     local perc1 = GetPowerPercent(unitName, resourceType)
@@ -54,14 +51,12 @@ local function UpdatePowerTextureUsingPercent(unitName, textureItem, getFuncType
     textureItem:SetVertexColor(colour.r, colour.g, colour.b, perc1)
 end
 
-function AptoHUD.HUD.CreateHexSegmentPlayerPower(
-    parent, point, xOffset, yOffset, resourceType, texturePath, textureBorderPath
-)
-    local frame = CreateFrame("Frame", nil, parent)
+function AptoHUD.HUD.CreateHexSegmentPlayerPower(resourceType, texturePath, textureBorderPath)
+    local frame = CreateFrame("Frame", nil, UIParent)
     local xSize = AptoHUD.HUD.Size.Main * AptoHUD.HUD.Scale.Main
     local ySize = AptoHUD.HUD.Size.Main * AptoHUD.HUD.Scale.Main
     frame:SetSize(xSize, ySize)
-    frame:SetPoint(point, parent, point, xOffset, yOffset)
+    frame:SetPoint("CENTER", UIParent, "CENTER", AptoHUD.HUD.Offset.X, AptoHUD.HUD.Offset.Y)
     frame:SetAlpha(AptoHUD.HUD.HUDAlpha.NoCombat)
 
     AptoHUD.HUD.CreateBorder(frame, textureBorderPath)
@@ -76,11 +71,11 @@ function AptoHUD.HUD.CreateHexSegmentPlayerPower(
     fill:AddMaskTexture(mask)
 
     local unitName = "player"
-    UpdatePowerTextureUsingPercent(unitName, fill, GetPowerValues, resourceType)
+    UpdatePowerTextureUsingPercent(unitName, fill, resourceType)
 
     frame:SetScript("OnEvent", function(_, event, eventUnit)
         if eventUnit == unitName then
-            UpdatePowerTextureUsingPercent(unitName, fill, GetPowerValues, resourceType)
+            UpdatePowerTextureUsingPercent(unitName, fill, resourceType)
         end
         if event == "PLAYER_REGEN_DISABLED" then
             frame:SetAlpha(AptoHUD.HUD.HUDAlpha.Combat)
@@ -94,7 +89,7 @@ function AptoHUD.HUD.CreateHexSegmentPlayerPower(
         frame:RegisterEvent(eventName)
     end
 
-    UpdatePowerTextureUsingPercent(unitName, fill, GetPowerValues, resourceType)
+    UpdatePowerTextureUsingPercent(unitName, fill, resourceType)
     return frame
 end
 
@@ -111,30 +106,97 @@ local function GetRuneOffCooldownCount()
             current = current + 1
         end
     end
-    return current
+    return current, maxRunes
 end
 
 -- Supercharged combo points have their own system
+-- GetUnitChargedPowerPoints is a Blizzard function returning a table with
+-- index numbers of each charged combo point
+-- UnitPowerMax is a Blizzard function
 local function GetSuperchargedComboPoints()
-    print(GetUnitChargedPowerPoints("player"))
-    return GetUnitChargedPowerPoints("player") or {}
+    local chargedIndices = GetUnitChargedPowerPoints("player")
+    local chargeCount = 0
+    if type(chargedIndices) == "table" then
+        for _, idx in ipairs(chargedIndices) do
+            chargeCount = chargeCount + 1
+        end
+    end
+    return chargeCount, UnitPowerMax("player", Enum.PowerType.ComboPoints)
 end
 
 -- returns current and max resource count
 -- UnitPower and UnitPowerMax are Blizzard functions
 local function GetResourceCount(resourceType)
     local powerType = AptoHUD.Utils.GetPowerType(resourceType)
-    return {
-        current = UnitPower("player", powerType),
-        max = UnitPowerMax("player", powerType)
-    }
+    return UnitPower("player", powerType), UnitPowerMax("player", powerType)
 end
 
-function AptoHUD.Resources.GetResourceCounts()
-    return {
-        primary = GetResourceCount("primary"),
-        secondary = GetResourceCount("secondary"),
-        rogue_charged = GetSuperchargedComboPoints(),
-        dk_runes = GetRuneOffCooldownCount(),
-    }
+local resourceHandlers = {
+    primary = { func = GetResourceCount, args = { "primary" } },
+    secondary = { func = GetResourceCount, args = { "secondary" } },
+    rogue_charged = { func = GetSuperchargedComboPoints, args = {} },
+    dk_runes = { func = GetRuneOffCooldownCount, args = {} },
+}
+
+local function ResourceGetter(resourceType)
+    local entry = resourceHandlers[resourceType]
+    if not entry then return nil end
+    return entry.func(unpack(entry.args))
+end
+
+local function GetPowerBarColour(powerType)
+    if powerType == "rogue_charged" then
+        return {r = 0, g = 0, b = 1}
+    else
+        return PowerBarColor[powerType] or {r = 1, g = 1, b = 1}
+    end
+end
+
+local function UpdatePowerTextureUsingCount(iconNumber, unitName, textureItem, resourceType)
+    local powerType = GetResources(resourceType)
+    local powerCount, _ = ResourceGetter(resourceType)
+    -- mid grey
+    local colour = {r = 0.5, g = 0.5, b = 0.5}
+    local alpha = 0
+    if resourceType == "secondary" then
+        alpha = 0.75
+    end
+    if powerCount >= iconNumber then
+        -- use power colour
+        colour = GetPowerBarColour(powerType)
+        alpha = 0.75
+    end
+    textureItem:Show()
+    textureItem:SetVertexColor(colour.r, colour.g, colour.b, alpha)
+end
+
+function AptoHUD.HUD.ResourceIcons(resourceType)
+    local _, countMax = ResourceGetter(resourceType)
+    local frames = AptoHUD.HUD.IconStrip(countMax, 3, false)
+
+    -- link frames to event handlers
+    for iconNumber, frameData in ipairs(frames) do
+        local unitName = "player"
+        local frame = frameData["frame"]
+        local fill = frameData["fill"]
+        UpdatePowerTextureUsingCount(iconNumber, unitName, fill, resourceType)
+
+        frame:SetScript("OnEvent", function(_, event, eventUnit)
+            if eventUnit == unitName then
+                UpdatePowerTextureUsingCount(iconNumber, unitName, fill, resourceType)
+            end
+            if event == "PLAYER_REGEN_DISABLED" then
+                frame:SetAlpha(AptoHUD.HUD.HUDAlpha.Combat)
+            elseif event == "PLAYER_REGEN_ENABLED" then
+                frame:SetAlpha(AptoHUD.HUD.HUDAlpha.NoCombat)
+            end
+        end)
+
+        local regEvents = AptoHUD.HUD.PlayerPowerEvents
+        for _, eventName in ipairs(regEvents) do
+            frame:RegisterEvent(eventName)
+        end
+
+        UpdatePowerTextureUsingCount(iconNumber, unitName, fill, resourceType)
+    end
 end
