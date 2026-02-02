@@ -20,6 +20,7 @@ AptoHUD.HUD.HUDAlpha = {
     Combat = 0.8,
     NoCombat = 0.4,
     Border = 0.5,
+    Icon = 1,
 }
 AptoHUD.HUD.Textures = {
     HexBottomLeft = "Interface\\AddOns\\AptoHUD\\Textures\\hex-ring-512-bl",
@@ -53,29 +54,12 @@ frame:SetScript("OnEvent", function(self, event)
             AptoHUD.HUD.Textures.HexBottomRight,
             AptoHUD.HUD.Textures.HexBottomRightBorder
         )
-        AptoHUD.HUD.CreateHexSegmentPlayerPower(
-            "secondary",
-            AptoHUD.HUD.Textures.HexTop,
-            AptoHUD.HUD.Textures.HexTopBorder
-        )
+        -- AptoHUD.HUD.CreateHexSegmentPlayerPower(
+        --     "secondary",
+        --     AptoHUD.HUD.Textures.HexTop,
+        --     AptoHUD.HUD.Textures.HexTopBorder
+        -- )
         AptoHUD.HUD.ResourceIcons("secondary")
         AptoHUD.HUD.ResourceIcons("rogue_charged")
-
-        -- Test elements 1
-        -- for i = 1, 6, 1 do
-        --     local IconX, IconY = AptoHUD.HUD.GetIconPosition(i)
-        --     AptoHUD.HUD.CreateHexIcon(UIParent, "CENTER", IconX, IconY)
-        --     for j = 1, i, 1 do
-        --         local IconOffsetX, IconOffsetY = AptoHUD.HUD.GetIconOffset(j)
-        --         AptoHUD.HUD.CreateHexIcon(UIParent, "CENTER", IconX + IconOffsetX, IconY + IconOffsetY)
-        --     end
-        -- end
-        -- AptoHUD.HUD.IconStrip(5, 1, true)
-        -- AptoHUD.HUD.IconStrip(3, 1, false)
-        -- AptoHUD.HUD.IconStrip(7, 2, true)
-        -- AptoHUD.HUD.IconStrip(7, 3, false, "secondary")
-        -- AptoHUD.HUD.IconStrip(3, 4, true)
-        -- AptoHUD.HUD.IconStrip(4, 5, true)
-        -- AptoHUD.HUD.IconStrip(6, 6, false)
     end
 end);

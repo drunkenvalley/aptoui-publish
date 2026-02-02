@@ -6,12 +6,15 @@ local addonName, AptoHUD = ...
 -- Primary power types can be looked up with UnitPowerType("player")
 -- Power colours can be looked up in PowerBarColor using the Enum.PowerType value
 
+local power_colour_overwrite = {
+    [Enum.PowerType.ComboPoints] = { r = 1, g = 0, b = 0 },
+    rogue_charged = { r = 0, g = 0, b = 1 }
+}
+
 local power_mana = { primary = Enum.PowerType.Mana }
 local power_energy = { primary = Enum.PowerType.Energy }
 local power_rage = { primary = Enum.PowerType.Rage }
 
--- local power_dk = { primary = Enum.PowerType.RunicPower , secondary = Enum.PowerType.Runes }
--- disabling runes for DK for now because
 local power_dk = { primary = Enum.PowerType.RunicPower, secondary = "dk_runes" }
 local power_dh = { primary = Enum.PowerType.Fury }
 local power_evoker = { primary = Enum.PowerType.Mana, secondary = Enum.PowerType.Essence }
@@ -168,4 +171,8 @@ function AptoHUD.Utils.GetPowerType(resourceType)
         print("GetPowerFromClassAndSpec", powerType, startsAtZero)
     end
     return powerType, startsAtZero
+end
+
+function AptoHUD.Utils.GetPowerColour(powerType)
+    return power_colour_overwrite[powerType] or PowerBarColor[powerType] or {r = 1, g = 1, b = 1}
 end

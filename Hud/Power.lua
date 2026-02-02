@@ -144,14 +144,6 @@ local function ResourceGetter(resourceType)
     return entry.func(unpack(entry.args))
 end
 
-local function GetPowerBarColour(powerType)
-    if powerType == "rogue_charged" then
-        return {r = 0, g = 0, b = 1}
-    else
-        return PowerBarColor[powerType] or {r = 1, g = 1, b = 1}
-    end
-end
-
 local function UpdatePowerTextureUsingCount(iconNumber, unitName, textureItem, resourceType)
     local powerType = GetResources(resourceType)
     local powerCount, _ = ResourceGetter(resourceType)
@@ -159,12 +151,14 @@ local function UpdatePowerTextureUsingCount(iconNumber, unitName, textureItem, r
     local colour = {r = 0.5, g = 0.5, b = 0.5}
     local alpha = 0
     if resourceType == "secondary" then
-        alpha = 0.75
+        alpha = 1
     end
     if powerCount >= iconNumber then
         -- use power colour
-        colour = GetPowerBarColour(powerType)
-        alpha = 0.75
+        colour = AptoHUD.Utils.GetPowerColour(powerType)
+        if alpha == 0 then
+            alpha = 0.75
+        end
     end
     textureItem:Show()
     textureItem:SetVertexColor(colour.r, colour.g, colour.b, alpha)
@@ -172,7 +166,12 @@ end
 
 function AptoHUD.HUD.ResourceIcons(resourceType)
     local _, countMax = ResourceGetter(resourceType)
-    local frames = AptoHUD.HUD.IconStrip(countMax, 3, false)
+    if countMax == nil then return nil end
+    local frameLayer = 0
+    if resourceType == "rogue_charged" then
+        frameLayer = 1
+    end
+    local frames = AptoHUD.HUD.IconStrip(countMax, 3, false, frameLayer)
 
     -- link frames to event handlers
     for iconNumber, frameData in ipairs(frames) do
@@ -186,7 +185,7 @@ function AptoHUD.HUD.ResourceIcons(resourceType)
                 UpdatePowerTextureUsingCount(iconNumber, unitName, fill, resourceType)
             end
             if event == "PLAYER_REGEN_DISABLED" then
-                frame:SetAlpha(AptoHUD.HUD.HUDAlpha.Combat)
+                frame:SetAlpha(AptoHUD.HUD.HUDAlpha.Icon)
             elseif event == "PLAYER_REGEN_ENABLED" then
                 frame:SetAlpha(AptoHUD.HUD.HUDAlpha.NoCombat)
             end

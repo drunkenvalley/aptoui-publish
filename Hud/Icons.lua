@@ -9,12 +9,12 @@ local function OffsetWrapping(offsetNumber)
     return offsetNumber
 end
 
-local function CreateHexIcon(parent, point, xOffset, yOffset, iconScale, colours)
-    local frame = CreateFrame("Frame", nil, parent)
+local function CreateHexIcon(xOffset, yOffset, iconScale, frameLayer)
+    local frame = CreateFrame("Frame", nil, UIParent)
     local xSize = AptoHUD.HUD.Size.Icon * iconScale
     local ySize = AptoHUD.HUD.Size.Icon * iconScale
     frame:SetSize(xSize, ySize)
-    frame:SetPoint(point, parent, point, xOffset, yOffset)
+    frame:SetPoint("CENTER", UIParent, "CENTER", xOffset, yOffset)
     frame:SetAlpha(AptoHUD.HUD.HUDAlpha.NoCombat)
 
     local mask = frame:CreateMaskTexture()
@@ -23,7 +23,7 @@ local function CreateHexIcon(parent, point, xOffset, yOffset, iconScale, colours
     mask:SetAllPoints()
 
     local colours = AptoHUD.Utils.GetClassColour()
-    local fill = frame:CreateTexture(nil, "ARTWORK")
+    local fill = frame:CreateTexture(nil, "ARTWORK", nil, frameLayer)
     fill:SetColorTexture(1, 1, 1, 1)
     fill:SetAllPoints()
     fill:Show()
@@ -33,7 +33,7 @@ local function CreateHexIcon(parent, point, xOffset, yOffset, iconScale, colours
     return { frame = frame, fill = fill }
 end
 
-function AptoHUD.HUD.IconStrip(iconCount, locationNumber, isClockwise)
+function AptoHUD.HUD.IconStrip(iconCount, locationNumber, isClockwise, frameLayer)
     local iconScale = AptoHUD.HUD.GetIconChainScale(iconCount)
     local offsetNumber = OffsetWrapping(3 + locationNumber - 1)
     local offsetIterate = -1
@@ -43,13 +43,13 @@ function AptoHUD.HUD.IconStrip(iconCount, locationNumber, isClockwise)
     end
     local xPosition, yPosition = AptoHUD.HUD.GetIconPosition(locationNumber, iconScale)
     local frames = {}
-    frames[1] = CreateHexIcon(UIParent, "CENTER", xPosition, yPosition, iconScale)
+    frames[1] = CreateHexIcon(xPosition, yPosition, iconScale, frameLayer)
     if iconCount > 1 then
         for i = 2, iconCount, 1 do
             local xOffset, yOffset = AptoHUD.HUD.GetIconOffset(offsetNumber, iconScale)
             xPosition = xPosition + xOffset
             yPosition = yPosition + yOffset
-            frames[i] = CreateHexIcon(UIParent, "CENTER", xPosition, yPosition, iconScale)
+            frames[i] = CreateHexIcon(xPosition, yPosition, iconScale, frameLayer)
             if i % 2 == 0 then
                 offsetNumber = offsetNumber + offsetIterate
             else
