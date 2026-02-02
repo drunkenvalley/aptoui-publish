@@ -60,10 +60,13 @@ frame:SetScript("OnEvent", function(self, event)
         )
 
         -- Test elements 1
-        for i = 1, 6, 1 do
-            local IconX, IconY = AptoHUD.HUD.GetIconPosition(i)
-            print(IconX, IconY)
-            AptoHUD.HUD.CreateHexIcon(UIParent, "CENTER", IconX, IconY)
-        end
+        -- for i = 1, 6, 1 do
+        --     local IconX, IconY = AptoHUD.HUD.GetIconPosition(i)
+        --     AptoHUD.HUD.CreateHexIcon(UIParent, "CENTER", IconX, IconY)
+        --     for j = 1, i, 1 do
+        --         local IconOffsetX, IconOffsetY = AptoHUD.HUD.GetIconOffset(j)
+        --         AptoHUD.HUD.CreateHexIcon(UIParent, "CENTER", IconX + IconOffsetX, IconY + IconOffsetY)
+        --     end
+        -- end
     end
 end);
