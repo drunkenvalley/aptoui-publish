@@ -18,12 +18,12 @@ local function UpdateHealthTextureUsingPercent(unitName, textureItem)
     textureItem:SetVertexColor(perc1r, perc1, 0, 1)
 end
 
-function AptoHUD.HUD.CreateHexSegmentPlayerHP()
-    local frame = CreateFrame("Frame", nil, UIParent)
+function AptoHUD.HUD.CreateHexSegmentPlayerHP(parent)
+    local frame = CreateFrame("Frame", nil, parent)
     local xSize = AptoHUD.HUD.Size.Main * AptoHUD.HUD.Scale.Main
     local ySize = AptoHUD.HUD.Size.Main * AptoHUD.HUD.Scale.Main
     frame:SetSize(xSize, ySize)
-    frame:SetPoint("CENTER", UIParent, "CENTER", AptoHUD.HUD.Offset.X, AptoHUD.HUD.Offset.Y)
+    frame:SetPoint("CENTER", parent, "CENTER", AptoHUD.HUD.Offset.X, AptoHUD.HUD.Offset.Y)
     frame:SetAlpha(AptoHUD.HUD.HUDAlpha.NoCombat)
 
     AptoHUD.HUD.CreateBorder(frame, AptoHUD.HUD.Textures.HexBottomLeftBorder)

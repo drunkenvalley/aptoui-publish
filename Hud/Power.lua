@@ -51,12 +51,12 @@ local function UpdatePowerTextureUsingPercent(unitName, textureItem, resourceTyp
     textureItem:SetVertexColor(colour.r, colour.g, colour.b, perc1)
 end
 
-function AptoHUD.HUD.CreateHexSegmentPlayerPower(resourceType, texturePath, textureBorderPath)
-    local frame = CreateFrame("Frame", nil, UIParent)
+function AptoHUD.HUD.CreateHexSegmentPlayerPower(parent, resourceType, texturePath, textureBorderPath)
+    local frame = CreateFrame("Frame", nil, parent)
     local xSize = AptoHUD.HUD.Size.Main * AptoHUD.HUD.Scale.Main
     local ySize = AptoHUD.HUD.Size.Main * AptoHUD.HUD.Scale.Main
     frame:SetSize(xSize, ySize)
-    frame:SetPoint("CENTER", UIParent, "CENTER", AptoHUD.HUD.Offset.X, AptoHUD.HUD.Offset.Y)
+    frame:SetPoint("CENTER", parent, "CENTER", AptoHUD.HUD.Offset.X, AptoHUD.HUD.Offset.Y)
     frame:SetAlpha(AptoHUD.HUD.HUDAlpha.NoCombat)
 
     AptoHUD.HUD.CreateBorder(frame, textureBorderPath)
@@ -161,14 +161,14 @@ local function UpdatePowerTextureUsingCount(iconNumber, unitName, textureItem, r
     textureItem:SetVertexColor(colour.r, colour.g, colour.b, alpha)
 end
 
-function AptoHUD.HUD.ResourceIcons(resourceType)
+function AptoHUD.HUD.ResourceIcons(parent, resourceType)
     local _, countMax = ResourceGetter(resourceType)
     if countMax == nil then return nil end
     local frameLayer = 0
     if resourceType == "rogue_charged" then
         frameLayer = 1
     end
-    local frames = AptoHUD.HUD.IconStrip(countMax, 3, false, frameLayer)
+    local frames = AptoHUD.HUD.IconStrip(parent, countMax, 3, false, frameLayer)
 
     -- link frames to event handlers
     for iconNumber, frameData in ipairs(frames) do
@@ -199,4 +199,5 @@ function AptoHUD.HUD.ResourceIcons(resourceType)
 
         UpdatePowerTextureUsingCount(iconNumber, unitName, fill, resourceType)
     end
+    return frames
 end

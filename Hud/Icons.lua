@@ -9,12 +9,12 @@ local function OffsetWrapping(offsetNumber)
     return offsetNumber
 end
 
-local function CreateHexIcon(xOffset, yOffset, iconScale, frameLayer)
-    local frame = CreateFrame("Frame", nil, UIParent)
+local function CreateHexIcon(parent, xOffset, yOffset, iconScale, frameLayer)
+    local frame = CreateFrame("Frame", nil, parent)
     local xSize = AptoHUD.HUD.Size.Icon * iconScale
     local ySize = AptoHUD.HUD.Size.Icon * iconScale
     frame:SetSize(xSize, ySize)
-    frame:SetPoint("CENTER", UIParent, "CENTER", xOffset, yOffset)
+    frame:SetPoint("CENTER", parent, "CENTER", xOffset, yOffset)
     frame:SetAlpha(AptoHUD.HUD.HUDAlpha.NoCombat)
 
     local mask = frame:CreateMaskTexture()
@@ -33,7 +33,7 @@ local function CreateHexIcon(xOffset, yOffset, iconScale, frameLayer)
     return { frame = frame, fill = fill }
 end
 
-function AptoHUD.HUD.IconStrip(iconCount, locationNumber, isClockwise, frameLayer)
+function AptoHUD.HUD.IconStrip(parent, iconCount, locationNumber, isClockwise, frameLayer)
     local iconScale = AptoHUD.HUD.GetIconChainScale(iconCount)
     local offsetNumber = OffsetWrapping(3 + locationNumber - 1)
     local offsetIterate = -1
@@ -43,13 +43,13 @@ function AptoHUD.HUD.IconStrip(iconCount, locationNumber, isClockwise, frameLaye
     end
     local xPosition, yPosition = AptoHUD.HUD.GetIconPosition(locationNumber, iconScale)
     local frames = {}
-    frames[1] = CreateHexIcon(xPosition, yPosition, iconScale, frameLayer)
+    frames[1] = CreateHexIcon(parent, xPosition, yPosition, iconScale, frameLayer)
     if iconCount > 1 then
         for i = 2, iconCount, 1 do
             local xOffset, yOffset = AptoHUD.HUD.GetIconOffset(offsetNumber, iconScale)
             xPosition = xPosition + xOffset
             yPosition = yPosition + yOffset
-            frames[i] = CreateHexIcon(xPosition, yPosition, iconScale, frameLayer)
+            frames[i] = CreateHexIcon(parent, xPosition, yPosition, iconScale, frameLayer)
             if i % 2 == 0 then
                 offsetNumber = offsetNumber + offsetIterate
             else

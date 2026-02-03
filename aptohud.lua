@@ -37,8 +37,28 @@ AptoHUD.HUD.Textures = {
 
 -- ----- Apply HUD
 
-local frame = CreateFrame("Frame");
-frame:RegisterEvent("PLAYER_LOGIN");
+local frame = CreateFrame("Frame")
+frame:RegisterEvent("PLAYER_LOGIN")
+frame:RegisterEvent("UNIT_MAXPOWER")
+local healthFrame = nil
+local powerFrame = nil
+local powerIcons = nil
+
+local function destroyHUDFrame(frame)
+    if frame then
+        frame:UnregisterAllEvents()
+        frame:SetScript("OnEvent", nil)
+        frame:Hide()
+        frame = nil
+    end
+end
+
+local function createHUDFrame(frameName)
+    local frame = CreateFrame("Frame", frameName, UIParent)
+    frame:SetPoint("CENTER")
+    frame:SetSize(1, 1)
+    return frame
+end
 
 frame:SetScript("OnEvent", function(self, event)
     if event == "PLAYER_LOGIN" then
@@ -49,23 +69,32 @@ frame:SetScript("OnEvent", function(self, event)
         print("AptoHUD loaded. Hello,", AptoHUDDB.playerName);
 
         -- Health
-        AptoHUD.HUD.CreateHexSegmentPlayerHP()
-
-        -- Power
+        if healthFrame then
+            destroyHUDFrame(healthFrame)
+        end
+        healthFrame = createHUDFrame("healthFrame")
+        AptoHUD.HUD.CreateHexSegmentPlayerHP(healthFrame)
+    end
+    if event == "PLAYER_LOGIN" or event == "UNIT_MAXPOWER" then
+        if powerFrame then
+            destroyHUDFrame(powerFrame)
+        end
+        powerFrame = createHUDFrame("powerFrame")
         AptoHUD.HUD.CreateHexSegmentPlayerPower(
+            powerFrame,
             "primary",
             AptoHUD.HUD.Textures.HexBottomRight,
             AptoHUD.HUD.Textures.HexBottomRightBorder
         )
-        -- AptoHUD.HUD.CreateHexSegmentPlayerPower(
-        --     "secondary",
-        --     AptoHUD.HUD.Textures.HexTop,
-        --     AptoHUD.HUD.Textures.HexTopBorder
-        -- )
+
+        if powerIcons then
+            destroyHUDFrame(powerIcons)
+        end
+        powerIcons = createHUDFrame("powerIcons")
         local resources = AptoHUD.Utils.GetResourceTypes()
         for resourceType, _ in pairs(resources) do
             if resourceType ~= "primary" then
-                AptoHUD.HUD.ResourceIcons(resourceType)
+                AptoHUD.HUD.ResourceIcons(powerIcons, resourceType)
             end
         end
     end
