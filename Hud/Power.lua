@@ -153,9 +153,11 @@ local function UpdatePowerTextureUsingCount(iconNumber, unitName, textureItem, r
     if resourceType == "secondary" then
         alpha = 0.5
     end
-    if powerCount >= iconNumber then
-        colour = AptoHUD.Utils.GetPowerColour(powerType)
-        alpha = 0.75
+    if type(powerCount) ~= "number" then
+        if powerCount >= iconNumber then
+            colour = AptoHUD.Utils.GetPowerColour(powerType)
+            alpha = 0.75
+        end
     end
     textureItem:Show()
     textureItem:SetVertexColor(colour.r, colour.g, colour.b, alpha)

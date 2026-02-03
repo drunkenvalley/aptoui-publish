@@ -45,12 +45,20 @@ local powerFrame = nil
 local powerIcons = nil
 
 local function destroyHUDFrame(frame)
+    if not frame or type(frame) ~= "table" then
+        return
+    end
     if frame then
         frame:UnregisterAllEvents()
         frame:SetScript("OnEvent", nil)
-        frame:Hide()
-        frame = nil
+        frame:SetScript("OnHide", nil)
+        frame:SetScript("OnShow", nil)
     end
+    local children = { frame:GetChildren() }
+    for _, child in ipairs(children) do
+        destroyHUDFrame(child)
+    end
+    frame:Hide()
 end
 
 local function createHUDFrame(frameName)
