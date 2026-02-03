@@ -24,7 +24,7 @@ function AptoHUD.HUD.CreateHexSegmentPlayerHP(parent)
     local ySize = AptoHUD.HUD.Size.Main * AptoHUD.HUD.Scale.Main
     frame:SetSize(xSize, ySize)
     frame:SetPoint("CENTER", parent, "CENTER", AptoHUD.HUD.Offset.X, AptoHUD.HUD.Offset.Y)
-    frame:SetAlpha(AptoHUD.HUD.HUDAlpha.NoCombat)
+    frame:SetAlpha(AptoHUD.HUD.HUDAlpha.Main.NoCombat)
 
     AptoHUD.HUD.CreateBorder(frame, AptoHUD.HUD.Textures.HexBottomLeftBorder)
 
@@ -45,9 +45,9 @@ function AptoHUD.HUD.CreateHexSegmentPlayerHP(parent)
             UpdateHealthTextureUsingPercent(unitName, fill)
         end
         if event == "PLAYER_REGEN_DISABLED" then
-            frame:SetAlpha(AptoHUD.HUD.HUDAlpha.Combat)
+            frame:SetAlpha(AptoHUD.HUD.HUDAlpha.Main.Combat)
         elseif event == "PLAYER_REGEN_ENABLED" then
-            frame:SetAlpha(AptoHUD.HUD.HUDAlpha.NoCombat)
+            frame:SetAlpha(AptoHUD.HUD.HUDAlpha.Main.NoCombat)
         end
     end)
 

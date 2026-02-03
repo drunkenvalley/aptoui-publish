@@ -57,7 +57,7 @@ function AptoHUD.HUD.CreateHexSegmentPlayerPower(parent, resourceType, texturePa
     local ySize = AptoHUD.HUD.Size.Main * AptoHUD.HUD.Scale.Main
     frame:SetSize(xSize, ySize)
     frame:SetPoint("CENTER", parent, "CENTER", AptoHUD.HUD.Offset.X, AptoHUD.HUD.Offset.Y)
-    frame:SetAlpha(AptoHUD.HUD.HUDAlpha.NoCombat)
+    frame:SetAlpha(AptoHUD.HUD.HUDAlpha.Main.NoCombat)
 
     AptoHUD.HUD.CreateBorder(frame, textureBorderPath)
 
@@ -78,9 +78,9 @@ function AptoHUD.HUD.CreateHexSegmentPlayerPower(parent, resourceType, texturePa
             UpdatePowerTextureUsingPercent(unitName, fill, resourceType)
         end
         if event == "PLAYER_REGEN_DISABLED" then
-            frame:SetAlpha(AptoHUD.HUD.HUDAlpha.Combat)
+            frame:SetAlpha(AptoHUD.HUD.HUDAlpha.Main.Combat)
         elseif event == "PLAYER_REGEN_ENABLED" then
-            frame:SetAlpha(AptoHUD.HUD.HUDAlpha.NoCombat)
+            frame:SetAlpha(AptoHUD.HUD.HUDAlpha.Main.NoCombat)
         end
     end)
 
@@ -184,9 +184,9 @@ function AptoHUD.HUD.ResourceIcons(parent, resourceType)
                 UpdatePowerTextureUsingCount(iconNumber, unitName, fill, resourceType)
             end
             if event == "PLAYER_REGEN_DISABLED" then
-                frame:SetAlpha(AptoHUD.HUD.HUDAlpha.Icon)
+                frame:SetAlpha(AptoHUD.HUD.HUDAlpha.Icon.Combat)
             elseif event == "PLAYER_REGEN_ENABLED" then
-                frame:SetAlpha(AptoHUD.HUD.HUDAlpha.NoCombat)
+                frame:SetAlpha(AptoHUD.HUD.HUDAlpha.Icon.NoCombat)
             end
         end)
 

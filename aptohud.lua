@@ -20,10 +20,15 @@ AptoHUD.HUD.PlayerPowerEvents = {
     "PLAYER_TARGET_CHANGED",
 }
 AptoHUD.HUD.HUDAlpha = {
-    Combat = 0.7,
-    NoCombat = 0.4,
-    Border = 0.75,
-    Icon = 1,
+    Main = {
+        Combat = .8,
+        NoCombat = .5,
+        Border = .5,
+    },
+    Icon = {
+        Combat = 1,
+        NoCombat = .75,
+    },
 }
 AptoHUD.HUD.Textures = {
     HexBottomLeft = "Interface\\AddOns\\AptoHUD\\Textures\\hex-ring-512-bl",
@@ -93,7 +98,6 @@ end
 local playerLoggedIn = false
 
 frame:SetScript("OnEvent", function(self, event)
-    print(event)
     if event == "PLAYER_LOGIN" then
         playerLoggedIn = true
         -- PlayerFrame:UnregisterAllEvents()

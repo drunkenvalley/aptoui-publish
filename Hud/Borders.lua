@@ -7,7 +7,7 @@ function AptoHUD.HUD.CreateBorder(frame, texturePath)
 
     local classColour = AptoHUD.Utils.GetClassColour()
     local border = frame:CreateTexture(nil, "ARTWORK", nil, 0)
-    border:SetColorTexture(1, 1, 1, AptoHUD.HUD.HUDAlpha.Border)
+    border:SetColorTexture(1, 1, 1, AptoHUD.HUD.HUDAlpha.Main.Border)
     border:AddMaskTexture(maskBorder)
     border:SetAllPoints()
     border:Show()
