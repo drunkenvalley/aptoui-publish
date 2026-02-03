@@ -37,7 +37,8 @@ AptoHUD.HUD.Textures = {
     HexBottomRightBorder = "Interface\\AddOns\\AptoHUD\\Textures\\hex-ring-512-br-border",
     HexTop = "Interface\\AddOns\\AptoHUD\\Textures\\hex-ring-512-top",
     HexTopBorder = "Interface\\AddOns\\AptoHUD\\Textures\\hex-ring-512-top-border",
-    HexSmall = "Interface\\AddOns\\AptoHUD\\Textures\\hex-ring-64",
+    HexSmallRing = "Interface\\AddOns\\AptoHUD\\Textures\\hex-ring-64",
+    HexSmallFill = "Interface\\AddOns\\AptoHUD\\Textures\\hex-ring-inner-64",
 }
 
 -- ----- Apply HUD

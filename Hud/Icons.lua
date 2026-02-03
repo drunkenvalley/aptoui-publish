@@ -9,7 +9,7 @@ local function OffsetWrapping(offsetNumber)
     return offsetNumber
 end
 
-local function CreateHexIcon(parent, xOffset, yOffset, iconScale, frameLayer)
+local function CreateIcon(parent, xOffset, yOffset, iconScale, frameLayer, texturePath)
     local frame = CreateFrame("Frame", nil, parent)
     local xSize = AptoHUD.HUD.Size.Icon * iconScale
     local ySize = AptoHUD.HUD.Size.Icon * iconScale
@@ -18,7 +18,7 @@ local function CreateHexIcon(parent, xOffset, yOffset, iconScale, frameLayer)
     frame:SetAlpha(1)
 
     local mask = frame:CreateMaskTexture()
-    local maskTexture = AptoHUD.HUD.Textures.HexSmall
+    local maskTexture = texturePath
     mask:SetTexture(maskTexture, "CLAMPTOBLACKADDITIVE", "CLAMPTOBLACKADDITIVE")
     mask:SetAllPoints()
 
@@ -33,7 +33,7 @@ local function CreateHexIcon(parent, xOffset, yOffset, iconScale, frameLayer)
     return { frame = frame, fill = fill }
 end
 
-function AptoHUD.HUD.IconStrip(parent, iconCount, locationNumber, isClockwise, frameLayer)
+function AptoHUD.HUD.IconStrip(parent, iconCount, locationNumber, isClockwise, frameLayer, texturePath)
     local iconScale = AptoHUD.HUD.GetIconChainScale(iconCount)
     local offsetNumber = OffsetWrapping(3 + locationNumber - 1)
     local offsetIterate = -1
@@ -43,13 +43,13 @@ function AptoHUD.HUD.IconStrip(parent, iconCount, locationNumber, isClockwise, f
     end
     local xPosition, yPosition = AptoHUD.HUD.GetIconPosition(locationNumber, iconScale)
     local frames = {}
-    frames[1] = CreateHexIcon(parent, xPosition, yPosition, iconScale, frameLayer)
+    frames[1] = CreateIcon(parent, xPosition, yPosition, iconScale, frameLayer, texturePath)
     if iconCount > 1 then
         for i = 2, iconCount, 1 do
             local xOffset, yOffset = AptoHUD.HUD.GetIconOffset(offsetNumber, iconScale)
             xPosition = xPosition + xOffset
             yPosition = yPosition + yOffset
-            frames[i] = CreateHexIcon(parent, xPosition, yPosition, iconScale, frameLayer)
+            frames[i] = CreateIcon(parent, xPosition, yPosition, iconScale, frameLayer, texturePath)
             if i % 2 == 0 then
                 offsetNumber = offsetNumber + offsetIterate
             else

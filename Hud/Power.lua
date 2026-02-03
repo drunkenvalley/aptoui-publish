@@ -167,10 +167,12 @@ function AptoHUD.HUD.ResourceIcons(parent, resourceType)
     local _, countMax = ResourceGetter(resourceType)
     if countMax == nil then return nil end
     local frameLayer = 0
+    local texturePath = AptoHUD.HUD.Textures.HexSmallRing
     if resourceType == "rogue_charged" then
         frameLayer = 1
+        texturePath = AptoHUD.HUD.Textures.HexSmallFill
     end
-    local frames = AptoHUD.HUD.IconStrip(parent, countMax, 3, false, frameLayer)
+    local frames = AptoHUD.HUD.IconStrip(parent, countMax, 3, false, frameLayer, texturePath)
 
     -- link frames to event handlers
     for iconNumber, frameData in ipairs(frames) do

@@ -7,10 +7,10 @@ local addonName, AptoHUD = ...
 -- Power colours can be looked up in PowerBarColor using the Enum.PowerType value
 
 local power_colour_overwrite = {
-    [Enum.PowerType.ComboPoints] = { r = 1, g = 0, b = 0 },
-    rogue_charged = { r = 0, g = 0, b = 1 },
+    [Enum.PowerType.ComboPoints] = { r = 1, g = 0.8, b = 0.1 },
+    rogue_charged = { r = 0, g = 0.5, b = 1 },
     dk_runes = { r = 1, g = 1, b = 1 },
-    [Enum.PowerType.Essence] = { r = 1, }
+    [Enum.PowerType.Essence] = { r = 0.2, g = 0.58, b = 0.5}
 }
 local power_additional_events = {
     [Enum.PowerType.ComboPoints] = {
