@@ -22,12 +22,12 @@ AptoHUD.HUD.PlayerPowerEvents = {
 AptoHUD.HUD.HUDAlpha = {
     Main = {
         Combat = .8,
-        NoCombat = .5,
+        NoCombat = .2,
         Border = .5,
     },
     Icon = {
         Combat = 1,
-        NoCombat = .75,
+        NoCombat = .5,
     },
 }
 AptoHUD.HUD.Textures = {

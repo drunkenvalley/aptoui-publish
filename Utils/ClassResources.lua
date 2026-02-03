@@ -194,7 +194,11 @@ function AptoHUD.Utils.GetResourceTypes()
             return shapeshiftResourceTypes
         end
     end
-    return PowerLookup[class][specID]
+    local powers = PowerLookup[class][specID]
+    if powers == nil then
+        return {}
+    end
+    return powers
 end
 
 -- Gets the power type ID from a lookup, based on the type of power
