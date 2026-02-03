@@ -153,10 +153,10 @@ local function UpdatePowerTextureUsingCount(iconNumber, unitName, textureItem, r
     if resourceType == "secondary" then
         alpha = 0.5
     end
-    if type(powerCount) ~= "number" then
+    if type(powerCount) == "number" then
         if powerCount >= iconNumber then
             colour = AptoHUD.Utils.GetPowerColour(powerType)
-            alpha = 0.75
+            alpha = 1
         end
     end
     textureItem:Show()

@@ -20,8 +20,8 @@ AptoHUD.HUD.PlayerPowerEvents = {
     "PLAYER_TARGET_CHANGED",
 }
 AptoHUD.HUD.HUDAlpha = {
-    Combat = 0.6,
-    NoCombat = 0.3,
+    Combat = 0.7,
+    NoCombat = 0.4,
     Border = 0.75,
     Icon = 1,
 }
@@ -37,9 +37,31 @@ AptoHUD.HUD.Textures = {
 
 -- ----- Apply HUD
 
+local hudHealthEvents = {
+    PLAYER_LOGIN = true,
+}
+local hudPowerEvents = {
+    PLAYER_LOGIN = true,
+    UNIT_MAXPOWER = true,
+    UPDATE_SHAPESHIFT_FORM = true,
+    UPDATE_SHAPESHIFT_FORMS = true,
+    PLAYER_TALENT_UPDATE = true,
+    UNIT_DISPLAYPOWER = true,
+    RUNE_TYPE_UPDATE = true,
+}
+
+local function isUpdateEvent(eventList, eventFired)
+    return eventList[eventFired] == true
+end
+
 local frame = CreateFrame("Frame")
-frame:RegisterEvent("PLAYER_LOGIN")
-frame:RegisterEvent("UNIT_MAXPOWER")
+for eventName, _ in pairs(hudHealthEvents) do
+    frame:RegisterEvent(eventName)
+end
+for eventName, _ in pairs(hudPowerEvents) do
+    frame:RegisterEvent(eventName)
+end
+
 local healthFrame = nil
 local powerFrame = nil
 local powerIcons = nil
@@ -68,41 +90,48 @@ local function createHUDFrame(frameName)
     return frame
 end
 
+local playerLoggedIn = false
+
 frame:SetScript("OnEvent", function(self, event)
+    print(event)
     if event == "PLAYER_LOGIN" then
+        playerLoggedIn = true
         -- PlayerFrame:UnregisterAllEvents()
         -- PlayerFrame:Hide()
 
         AptoHUDDB.playerName = UnitName("player");
         print("AptoHUD loaded. Hello,", AptoHUDDB.playerName);
-
-        -- Health
-        if healthFrame then
-            destroyHUDFrame(healthFrame)
-        end
-        healthFrame = createHUDFrame("healthFrame")
-        AptoHUD.HUD.CreateHexSegmentPlayerHP(healthFrame)
     end
-    if event == "PLAYER_LOGIN" or event == "UNIT_MAXPOWER" then
-        if powerFrame then
-            destroyHUDFrame(powerFrame)
+    if playerLoggedIn then
+        if isUpdateEvent(hudHealthEvents, event) then
+            -- Health
+            if healthFrame then
+                destroyHUDFrame(healthFrame)
+            end
+            healthFrame = createHUDFrame("healthFrame")
+            AptoHUD.HUD.CreateHexSegmentPlayerHP(healthFrame)
         end
-        powerFrame = createHUDFrame("powerFrame")
-        AptoHUD.HUD.CreateHexSegmentPlayerPower(
-            powerFrame,
-            "primary",
-            AptoHUD.HUD.Textures.HexBottomRight,
-            AptoHUD.HUD.Textures.HexBottomRightBorder
-        )
+        if isUpdateEvent(hudPowerEvents, event) then
+            if powerFrame then
+                destroyHUDFrame(powerFrame)
+            end
+            powerFrame = createHUDFrame("powerFrame")
+            AptoHUD.HUD.CreateHexSegmentPlayerPower(
+                powerFrame,
+                "primary",
+                AptoHUD.HUD.Textures.HexBottomRight,
+                AptoHUD.HUD.Textures.HexBottomRightBorder
+            )
 
-        if powerIcons then
-            destroyHUDFrame(powerIcons)
-        end
-        powerIcons = createHUDFrame("powerIcons")
-        local resources = AptoHUD.Utils.GetResourceTypes()
-        for resourceType, _ in pairs(resources) do
-            if resourceType ~= "primary" then
-                AptoHUD.HUD.ResourceIcons(powerIcons, resourceType)
+            if powerIcons then
+                destroyHUDFrame(powerIcons)
+            end
+            powerIcons = createHUDFrame("powerIcons")
+            local resources = AptoHUD.Utils.GetResourceTypes()
+            for resourceType, _ in pairs(resources) do
+                if resourceType ~= "primary" then
+                    AptoHUD.HUD.ResourceIcons(powerIcons, resourceType)
+                end
             end
         end
     end

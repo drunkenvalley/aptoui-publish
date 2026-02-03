@@ -24,7 +24,6 @@ local power_additional_events = {
 }
 
 local power_mana = { primary = Enum.PowerType.Mana }
-local power_energy = { primary = Enum.PowerType.Energy }
 local power_rage = { primary = Enum.PowerType.Rage }
 
 local power_dk = { primary = Enum.PowerType.RunicPower, dk_runes = "dk_runes" }
@@ -58,6 +57,15 @@ for _, name in ipairs(powerStartsAtZeroList) do
     powerStartsAtZero[name] = true
 end
 
+local PowerLookupDruidForm = {
+    -- moonkin
+    [31] = { primary = Enum.PowerType.Mana, secondary = Enum.PowerType.LunarPower },
+    -- cat
+    [1] = { primary = Enum.PowerType.Energy, secondary = Enum.PowerType.ComboPoints },
+    -- bear
+    [5] = power_rage,
+}
+
 -- See wowlookups/ClassSpecs for the numbers used here
 local PowerLookup = {
     deathknight = {
@@ -76,13 +84,13 @@ local PowerLookup = {
         -- Vengeance
         [1480] = power_dh
     },
-    druid = {
+    druid = {  -- note that these are for "no form" druid, see PowerLookupDruidForm for form values
         -- balance
         [102] = { primary = Enum.PowerType.Mana, secondary = Enum.PowerType.LunarPower },
         -- feral
-        [103] = { primary = Enum.PowerType.Energy, secondary = Enum.PowerType.ComboPoints },
+        [103] = { primary = Enum.PowerType.Mana, secondary = Enum.PowerType.ComboPoints },
         -- guardian
-        [104] = power_rage,
+        [104] = power_mana,
         -- resto
         [105] = power_mana
     },
@@ -175,8 +183,17 @@ local function GetClassAndSpec()
     return class, specID
 end
 
+-- GetShapeshiftFormID is a Blizzard function
 function AptoHUD.Utils.GetResourceTypes()
     local class, specID = GetClassAndSpec()
+    local shapeshiftType
+    if class == "druid" then
+        local formID = GetShapeshiftFormID()
+        shapeshiftResourceTypes = PowerLookupDruidForm[formID]
+        if shapeshiftResourceTypes then
+            return shapeshiftResourceTypes
+        end
+    end
     return PowerLookup[class][specID]
 end
 
