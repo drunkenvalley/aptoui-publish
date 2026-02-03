@@ -150,8 +150,8 @@ local function UpdatePowerTextureUsingCount(iconNumber, unitName, textureItem, r
     -- mid grey
     local colour = {r = 0.5, g = 0.5, b = 0.5}
     local alpha = 0
-    if resourceType == "secondary" then
-        alpha = 0.5
+    if resourceType == "secondary" or resourceType == "dk_runes" then
+        alpha = 0.25
     end
     if type(powerCount) == "number" then
         if powerCount >= iconNumber then

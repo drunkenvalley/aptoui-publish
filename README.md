@@ -7,8 +7,7 @@ The setup is for a hud surrounding the character, where:
 
 - the bottom-left third is the player health
 - the bottom-right third is the main player resource (mana, energy, rage, runic power, etc)
-- additional resources show as a second level inside the bottom-right third (runes, combo points, etc)
-- the top third is the target health (optional)
+- additional resources show as a set of icons inside the bottom-right third (combo points, etc)
 
 ## Blizzard documentation
 
@@ -23,3 +22,11 @@ There are a wide range of websites which provide tutorials and other help. A par
 guide is below:
 
 https://github.com/Amadeus-/WoWAddonDevGuide
+
+## Use of AI
+
+I used Copilot to help me build this. There is not a lot of code that has been written by Copilot
+and I would urge caution for anyone else using Copilot or other AI tools due to the wealth
+of addons and documentation of the pre-Midnight system that fundamentally doesn't work
+any longer due to the changes to the addon ecosystem and the implementation of secret values
+for many items.
