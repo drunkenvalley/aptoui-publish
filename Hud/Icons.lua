@@ -15,7 +15,7 @@ local function CreateHexIcon(parent, xOffset, yOffset, iconScale, frameLayer)
     local ySize = AptoHUD.HUD.Size.Icon * iconScale
     frame:SetSize(xSize, ySize)
     frame:SetPoint("CENTER", parent, "CENTER", xOffset, yOffset)
-    frame:SetAlpha(AptoHUD.HUD.HUDAlpha.Icon.NoCombat)
+    frame:SetAlpha(1)
 
     local mask = frame:CreateMaskTexture()
     local maskTexture = AptoHUD.HUD.Textures.HexSmall
