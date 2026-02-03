@@ -201,7 +201,7 @@ end
 -- resourceType in "primary", "secondary"
 function AptoHUD.Utils.GetPowerType(resourceType)
     local resources = AptoHUD.Utils.GetResourceTypes()
-    if not resources
+    if not resources then
         return nil, nil
     end
     local powerType = resources[resourceType]
