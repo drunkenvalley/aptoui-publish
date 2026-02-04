@@ -176,16 +176,9 @@ local PowerLookup = {
     }
 }
 
-local function GetClassAndSpec()
-    local _, class = UnitClass("player")
-    local class = class:lower()
-    local specID = AptoHUD.Utils.GetPlayerSpec()
-    return class, specID
-end
-
 -- GetShapeshiftFormID is a Blizzard function
 function AptoHUD.Utils.GetResourceTypes()
-    local class, specID = GetClassAndSpec()
+    local class, specID = AptoHUD.Utils.GetClassAndSpec()
     local shapeshiftType
     if class == "druid" then
         local formID = GetShapeshiftFormID()
