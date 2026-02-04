@@ -16,7 +16,7 @@ function AptoHUD.Utils.DestroyHUDFrame(frame)
     end
     local children = { frame:GetChildren() }
     for _, child in ipairs(children) do
-        destroyHUDFrame(child)
+        AptoHUD.Utils.DestroyHUDFrame(child)
     end
     frame:Hide()
 end

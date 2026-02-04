@@ -1,11 +1,13 @@
 local addonName, AptoHUD = ...
 
+local combatEvent = "PLAYER_REGEN_DISABLED"
+local outOfCombatEvent = "PLAYER_REGEN_ENABLED"
 local buffCheckEvents = {
     UNIT_AURA = true,
     UPDATE_SHAPESHIFT_FORM = true,
+    PLAYER_ALIVE = true,
+    PLAYER_ENTERING_WORLD = true,
 }
-local combatEvent = "PLAYER_REGEN_DISABLED"
-local outOfCombatEvent = "PLAYER_REGEN_ENABLED"
 
 local function CreateBuffReminder(parent, classBuffType, reminderIndex)
     local reminder = CreateFrame("Frame", classBuffType, parent)
@@ -14,7 +16,7 @@ local function CreateBuffReminder(parent, classBuffType, reminderIndex)
     reminder:SetPoint("CENTER", parent, "CENTER", 0, reminderIndex * ySize)
     reminder.text = reminder:CreateFontString(nil, "OVERLAY", "GameFontNormalLarge")
     reminder.text:SetPoint("CENTER")
-    reminder.text:SetText("Missing buff: ", classBuffType)
+    reminder.text:SetText("Missing buff: " .. classBuffType)
     reminder:Hide()
     return reminder
 end
@@ -38,23 +40,27 @@ function AptoHUD.HUD.CreateBuffReminders()
     for classBuffType, _ in pairs(classBuffs) do
         local reminderFrame = CreateBuffReminder(buffReminderFrame, classBuffType, reminderIndex)
         reminders[classBuffType] = reminderFrame
-        reminderFrame:RegisterEvent("PLAYER_LOGIN")
+        reminderFrame:RegisterEvent("PLAYER_ENTERING_WORLD")
         reminderFrame:RegisterEvent(combatEvent)
         reminderFrame:RegisterEvent(outOfCombatEvent)
+        for eventName, _ in pairs(buffCheckEvents) do
+            reminderFrame:RegisterEvent(eventName)
+        end
+        -- we are registering/unregistering events based on combat
+        -- because in combat the unit auras are secret, so it doesn't work & throws a load of errors
+        -- so we might as well just hide the frames in this case
         reminderFrame:SetScript("OnEvent", function(self, event, unit)
             if event == combatEvent then
-                print("in combat")
-                for eventName, _ in pairs(hudPowerEvents) do
-                    reminderFrame:UnRegisterEvent(eventName)
+                for eventName, _ in pairs(buffCheckEvents) do
+                    reminderFrame:Hide()
+                    reminderFrame:UnregisterEvent(eventName)
                 end
             elseif event == outOfCombatEvent then
-                print("out of combat")
-                for eventName, _ in pairs(hudPowerEvents) do
+                for eventName, _ in pairs(buffCheckEvents) do
                     reminderFrame:RegisterEvent(eventName)
                 end
             end
-            if AptoHUD.Utils.isUpdateEvent(AptoHUD.HUD.BuffCheckEvents) then
-                print("buff checking event", classBuffType)
+            if AptoHUD.Utils.isUpdateEvent(buffCheckEvents, event) or event == outOfCombatEvent then
                 local isMissing = AptoHUD.Utils.HasMissingClassBuff(class)[classBuffType] or false
                 ShowBuffReminder(reminderFrame, isMissing)
             end
