@@ -106,21 +106,6 @@ frame:SetScript("OnEvent", function(self, event)
 
         AptoHUDDB.playerName = UnitName("player");
         print("AptoHUD loaded. Hello,", AptoHUDDB.playerName);
-
-        for i, region in ipairs({ PlayerCastingBarFrame:GetRegions() }) do
-            local tex = region.GetTexture and region:GetTexture()
-            local atlas = region.GetAtlas and region:GetAtlas()
-            print(
-                i,
-                region:GetObjectType(),
-                region:GetDrawLayer(),
-                atlas or tex or "no texture"
-            )
-        end
-
-        for i, child in ipairs({ PlayerCastingBarFrame:GetChildren() }) do
-            print(i, child:GetObjectType(), child:GetName())
-        end
     end
     if playerLoggedIn then
         if isUpdateEvent(hudHealthEvents, event) then
