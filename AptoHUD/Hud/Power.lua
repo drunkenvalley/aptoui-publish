@@ -1,5 +1,3 @@
-local addonName, AptoUI = ...
-
 -- powerType is the number of power type e.g. Enum.PowerType.Energy which is the same as 3
 -- resourceType is "primary", "secondary", etc and gets looked up from Utils/ClassResources
 

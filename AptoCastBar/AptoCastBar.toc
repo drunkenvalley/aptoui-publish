@@ -1,11 +1,11 @@
 ## Interface: 120000, 120001
 ## Title: AptoCastBar
+## RequiredDeps: AptoUI
 ## Author: aptosaurinae
 ## Version: 0.1
 ## Category: AptoUI
 ## SavedVariables: AptoHUDDB
 ## LoadSavedVariablesFirst: 1
-## RequiredDeps: AptoUI
 ## IconTexture: Interface\AddOns\AptoUI\Textures\hex-icon-32.png
 
 AptoCastBar.lua

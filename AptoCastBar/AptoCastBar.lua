@@ -1,5 +1,3 @@
-local addonName, AptoUI = ...
-
 AptoUI.CastBar.Config = {
     -- do not reduce width past 225 if using default textures,
     -- this is the min size of the textures Blizzard uses

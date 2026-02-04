@@ -1,5 +1,3 @@
-local addonName, AptoUI = ...
-
 AptoUI.Utils.ClassBuffLookup = {
     druid = {},
     evoker = {},

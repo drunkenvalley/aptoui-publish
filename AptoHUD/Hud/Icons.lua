@@ -1,5 +1,3 @@
-local addonName, AptoUI = ...
-
 local function OffsetWrapping(offsetNumber)
     if offsetNumber > 6 then
         offsetNumber = offsetNumber - 6

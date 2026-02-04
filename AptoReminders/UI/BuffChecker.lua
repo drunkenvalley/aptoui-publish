@@ -1,5 +1,3 @@
-local addonName, AptoUI = ...
-
 local combatEvent = "PLAYER_REGEN_DISABLED"
 local outOfCombatEvent = "PLAYER_REGEN_ENABLED"
 local buffCheckEvents = {

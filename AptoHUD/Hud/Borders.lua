@@ -1,5 +1,3 @@
-local addonName, AptoUI = ...
-
 function AptoUI.HUD.CreateBorder(frame, texturePath)
     local maskBorder = frame:CreateMaskTexture()
     maskBorder:SetTexture(texturePath, "CLAMPTOBLACKADDITIVE", "CLAMPTOBLACKADDITIVE")

@@ -1,6 +1,4 @@
-local addonName, AptoHUD = ...
-
-AptoHUD.WOW.SPEC_FORMAT_STRINGS = {
+AptoUI.WOW.SPEC_FORMAT_STRINGS = {
 	[62] = "mage-arcane",
 	[63] = "mage-fire",
 	[64] = "mage-frost",

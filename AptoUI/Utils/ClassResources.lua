@@ -1,5 +1,3 @@
-local addonName, AptoUI = ...
-
 -- Todo: Consider tracking things like Whirlwind charges for Warrior, or Stagger for Brewmaster?
 
 -- Enum.PowerType is a built-in Blizzard system for looking up these types

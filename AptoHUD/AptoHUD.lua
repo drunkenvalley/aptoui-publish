@@ -1,10 +1,4 @@
-local addonName, AptoUI = ...
-
--- saved variables must be global not local
-AptoHUDDB = AptoHUDDB or {};
-
 -- Settings
-AptoUI.debug = false
 AptoUI.HUD.PlayerHealthUpdateEvents = {
     "UNIT_HEALTH",
     "UNIT_MAXHEALTH",

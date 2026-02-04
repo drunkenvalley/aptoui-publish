@@ -1,5 +1,3 @@
-local addonName, AptoUI = ...
-
 -- Get secret health values
 local function GetHealthValues(unitName)
     local perc1 = UnitHealthPercent(unitName, false, CurveConstants.ZeroToOne)

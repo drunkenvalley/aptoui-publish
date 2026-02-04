@@ -1,5 +1,3 @@
-local addonName, AptoUI = ...
-
 AptoUI.HUD.Scale = {
     Main = 0.7,
     Icon = 1,

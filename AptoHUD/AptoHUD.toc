@@ -1,14 +1,13 @@
 ## Interface: 120000, 120001
 ## Title: AptoHUD
+## RequiredDeps: AptoUI
 ## Author: aptosaurinae
 ## Version: 0.1
 ## Category: AptoUI
 ## SavedVariables: AptoHUDDB
 ## LoadSavedVariablesFirst: 1
-## RequiredDeps: AptoUI
 ## IconTexture: Interface\AddOns\AptoUI\Textures\hex-icon-32.png
 
-Hud/BuffChecker.lua
 Hud/Geometry.lua
 Hud/Icons.lua
 Hud/Borders.lua

@@ -1,10 +1,8 @@
-local addonName, AptoHUD = ...
-
-function AptoHUD.Utils.isUpdateEvent(eventList, eventFired)
+function AptoUI.Utils.isUpdateEvent(eventList, eventFired)
     return eventList[eventFired] == true
 end
 
-function AptoHUD.Utils.DestroyHUDFrame(frame)
+function AptoUI.Utils.DestroyHUDFrame(frame)
     if not frame or type(frame) ~= "table" then
         return
     end
@@ -16,12 +14,12 @@ function AptoHUD.Utils.DestroyHUDFrame(frame)
     end
     local children = { frame:GetChildren() }
     for _, child in ipairs(children) do
-        AptoHUD.Utils.DestroyHUDFrame(child)
+        AptoUI.Utils.DestroyHUDFrame(child)
     end
     frame:Hide()
 end
 
-function AptoHUD.Utils.CreateHUDFrame(frameName)
+function AptoUI.Utils.CreateHUDFrame(frameName)
     local frame = CreateFrame("Frame", frameName, UIParent)
     frame:SetPoint("CENTER")
     frame:SetSize(1, 1)

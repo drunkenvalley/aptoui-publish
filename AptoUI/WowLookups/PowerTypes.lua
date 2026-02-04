@@ -1,6 +1,4 @@
-local addonName, AptoHUD = ...
-
-AptoHUD.WOW.PowerTypes = {
+AptoUI.WOW.PowerTypes = {
     { Name = "Mana", Type = "PowerType", EnumValue = 0 },
     { Name = "Rage", Type = "PowerType", EnumValue = 1 },
     { Name = "Focus", Type = "PowerType", EnumValue = 2 },
