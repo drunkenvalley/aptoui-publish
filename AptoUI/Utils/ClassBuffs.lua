@@ -1,6 +1,6 @@
-local addonName, AptoHUD = ...
+local addonName, AptoUI = ...
 
-AptoHUD.Utils.ClassBuffLookup = {
+AptoUI.Utils.ClassBuffLookup = {
     druid = {},
     evoker = {},
     mage = {},
@@ -8,29 +8,29 @@ AptoHUD.Utils.ClassBuffLookup = {
     rogue = {},
     warrior = {},
 }
-AptoHUD.Utils.ClassBuffLookup["druid"]["Mark of the Wild"] = {
+AptoUI.Utils.ClassBuffLookup["druid"]["Mark of the Wild"] = {
     motw = "Mark of the Wild"
 }
-AptoHUD.Utils.ClassBuffLookup["evoker"]["Blessing of the Bronze"] = {
+AptoUI.Utils.ClassBuffLookup["evoker"]["Blessing of the Bronze"] = {
     blessingbronze = "Blessing of the Bronze"
 }
-AptoHUD.Utils.ClassBuffLookup["mage"]["Arcane Intellect"] = {
+AptoUI.Utils.ClassBuffLookup["mage"]["Arcane Intellect"] = {
     arcaneint = "Arcane Intellect"
 }
-AptoHUD.Utils.ClassBuffLookup["priest"]["Power Word: Fortitude"] = {
+AptoUI.Utils.ClassBuffLookup["priest"]["Power Word: Fortitude"] = {
     pwfort = "Power Word: Fortitude"
 }
-AptoHUD.Utils.ClassBuffLookup["rogue"]["Lethal Poison"] = {
+AptoUI.Utils.ClassBuffLookup["rogue"]["Lethal Poison"] = {
     deadly = "Deadly Poison",
     instant = "Instant Poison",
     wound = "Wound Poison",
 }
-AptoHUD.Utils.ClassBuffLookup["rogue"]["Non-Lethal Poison"] = {
+AptoUI.Utils.ClassBuffLookup["rogue"]["Non-Lethal Poison"] = {
     atrophic = "Atrophic Poison",
     crippling = "Crippling Poison",
     numbing = "Numbing Poison",
 }
-AptoHUD.Utils.ClassBuffLookup["warrior"]["Battle Shout"] = {
+AptoUI.Utils.ClassBuffLookup["warrior"]["Battle Shout"] = {
     bshout = "Battle Shout"
 }
 
@@ -46,14 +46,14 @@ local function CheckActiveBuff(buffsList, aurasList)
     return false
 end
 
-function AptoHUD.Utils.HasMissingClassBuff(class)
+function AptoUI.Utils.HasMissingClassBuff(class)
     local activeBuffs = {}
     AuraUtil.ForEachAura("player", "HELPFUL", nil, function(aura)
         activeBuffs[aura] = true
     end)
 
     local missingBuffTypes = {}
-    for buffCategoryName, buffCategoryBuffNames in pairs(AptoHUD.Utils.ClassBuffLookup[class]) do
+    for buffCategoryName, buffCategoryBuffNames in pairs(AptoUI.Utils.ClassBuffLookup[class]) do
         missingBuffTypes[buffCategoryName] = not CheckActiveBuff(buffCategoryBuffNames, activeBuffs)
     end
 

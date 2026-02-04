@@ -1,4 +1,4 @@
-local addonName, AptoHUD = ...
+local addonName, AptoUI = ...
 
 -- Todo: Consider tracking things like Whirlwind charges for Warrior, or Stagger for Brewmaster?
 
@@ -177,8 +177,8 @@ local PowerLookup = {
 }
 
 -- GetShapeshiftFormID is a Blizzard function
-function AptoHUD.Utils.GetResourceTypes()
-    local class, specID = AptoHUD.Utils.GetClassAndSpec()
+function AptoUI.Utils.GetResourceTypes()
+    local class, specID = AptoUI.Utils.GetClassAndSpec()
     local shapeshiftType
     if class == "druid" then
         local formID = GetShapeshiftFormID()
@@ -196,8 +196,8 @@ end
 
 -- Gets the power type ID from a lookup, based on the type of power
 -- resourceType in "primary", "secondary"
-function AptoHUD.Utils.GetPowerType(resourceType)
-    local resources = AptoHUD.Utils.GetResourceTypes()
+function AptoUI.Utils.GetPowerType(resourceType)
+    local resources = AptoUI.Utils.GetResourceTypes()
     if not resources then
         return nil, nil
     end
@@ -206,16 +206,13 @@ function AptoHUD.Utils.GetPowerType(resourceType)
         return nil, nil
     end
     local startsAtZero = powerStartsAtZero[powerType] or false
-    if AptoHUD.debug then
-        print("GetPowerFromClassAndSpec", powerType, startsAtZero)
-    end
     return powerType, startsAtZero
 end
 
-function AptoHUD.Utils.GetPowerColour(powerType)
+function AptoUI.Utils.GetPowerColour(powerType)
     return power_colour_overwrite[powerType] or PowerBarColor[powerType] or {r = 1, g = 1, b = 1}
 end
 
-function AptoHUD.Utils.GetPowerEvents(powerType)
+function AptoUI.Utils.GetPowerEvents(powerType)
     return power_additional_events[powerType] or {}
 end

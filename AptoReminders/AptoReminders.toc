@@ -1,0 +1,12 @@
+## Interface: 120000, 120001
+## Title: AptoReminders
+## Author: aptosaurinae
+## Version: 0.1
+## Category: AptoUI
+## SavedVariables: AptoHUDDB
+## LoadSavedVariablesFirst: 1
+## RequiredDeps: AptoUI
+## IconTexture: Interface\AddOns\AptoUI\Textures\hex-icon-32.png
+
+UI/BuffChecker.lua
+AptoReminders.lua

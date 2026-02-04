@@ -1,19 +1,18 @@
+local addonName, AptoUI = ...
 
-local addonName, AptoHUD = ...
-
-AptoHUD.HUD.Scale = {
+AptoUI.HUD.Scale = {
     Main = 0.7,
     Icon = 1,
 }
 
-AptoHUD.HUD.Size = {
+AptoUI.HUD.Size = {
     Main = 512,
     Icon = 64
 }
 
 
 -- Y offset applied to make it more centred on the character
-AptoHUD.HUD.Offset = { X = 0, Y = -50 }
+AptoUI.HUD.Offset = { X = 0, Y = -50 }
 
 -- this is based on the specific drawn textures, using top right point coords vs centre point
 local HexPoints = {
@@ -26,7 +25,7 @@ local HexPoints = {
         Side = { X = 220, Y = 128 },
     },
 }
-local HexIconSizeRatio = AptoHUD.HUD.Size.Icon / AptoHUD.HUD.Size.Main
+local HexIconSizeRatio = AptoUI.HUD.Size.Icon / AptoUI.HUD.Size.Main
 local IconOffsetBuffer = 3
 
 -- locationNumber: 1 = top, numbered clockwise
@@ -51,20 +50,20 @@ local function GetLocationFactors(locationNumber)
     return locationType, xFactor, yFactor
 end
 
-function AptoHUD.HUD.GetIconPosition(locationNumber, iconScale)
-    local iconScale = iconScale or AptoHUD.HUD.Scale.Icon
+function AptoUI.HUD.GetIconPosition(locationNumber, iconScale)
+    local iconScale = iconScale or AptoUI.HUD.Scale.Icon
     local locationType, xFactor, yFactor = GetLocationFactors(locationNumber)
-    local hexIconScaleRatio = iconScale / AptoHUD.HUD.Scale.Main
+    local hexIconScaleRatio = iconScale / AptoUI.HUD.Scale.Main
     local x = (
-        AptoHUD.HUD.Offset.X
-        + HexPoints.Inside[locationType].X * AptoHUD.HUD.Scale.Main * xFactor
-        - HexPoints.Outside[locationType].X * AptoHUD.HUD.Scale.Main * HexIconSizeRatio * hexIconScaleRatio * xFactor
+        AptoUI.HUD.Offset.X
+        + HexPoints.Inside[locationType].X * AptoUI.HUD.Scale.Main * xFactor
+        - HexPoints.Outside[locationType].X * AptoUI.HUD.Scale.Main * HexIconSizeRatio * hexIconScaleRatio * xFactor
         - IconOffsetBuffer * xFactor
     )
     local y = (
-        AptoHUD.HUD.Offset.Y
-        + HexPoints.Inside[locationType].Y * AptoHUD.HUD.Scale.Main * yFactor
-        - HexPoints.Outside[locationType].Y * AptoHUD.HUD.Scale.Main * HexIconSizeRatio * hexIconScaleRatio * yFactor
+        AptoUI.HUD.Offset.Y
+        + HexPoints.Inside[locationType].Y * AptoUI.HUD.Scale.Main * yFactor
+        - HexPoints.Outside[locationType].Y * AptoUI.HUD.Scale.Main * HexIconSizeRatio * hexIconScaleRatio * yFactor
         - IconOffsetBuffer * yFactor
     )
     return x, y
@@ -103,25 +102,25 @@ local function GetLocationFactorsOffset(locationNumber)
     return locationType, xFactor, yFactor
 end
 
-function AptoHUD.HUD.GetIconOffset(locationNumber, scaleFactor)
+function AptoUI.HUD.GetIconOffset(locationNumber, scaleFactor)
     local locationType, xFactor, yFactor = GetLocationFactorsOffset(locationNumber)
-    local scaleFactor = scaleFactor or AptoHUD.HUD.Scale.Icon
+    local scaleFactor = scaleFactor or AptoUI.HUD.Scale.Icon
     local x = IconOffsets[locationType].X * xFactor * HexIconSizeRatio * scaleFactor
     local y = IconOffsets[locationType].Y * yFactor * HexIconSizeRatio * scaleFactor
     return x, y
 end
 
 local function GetIconChainLength(iconCount)
-    local iconSize = AptoHUD.HUD.Size.Icon
+    local iconSize = AptoUI.HUD.Size.Icon
     local fullLength = math.floor(iconCount / 2)
     local halfLength = math.floor((iconCount + 1) / 2)
     return fullLength * iconSize + halfLength * iconSize / 2
 end
-local HexInsideLength = HexPoints.Inside.Side.Y * 2 * AptoHUD.HUD.Scale.Main - 2 * IconOffsetBuffer
+local HexInsideLength = HexPoints.Inside.Side.Y * 2 * AptoUI.HUD.Scale.Main - 2 * IconOffsetBuffer
 
-function AptoHUD.HUD.GetIconChainScale(iconCount)
-    local maxScale = AptoHUD.HUD.Scale.Icon
-    local mainScale = AptoHUD.HUD.Scale.Main
+function AptoUI.HUD.GetIconChainScale(iconCount)
+    local maxScale = AptoUI.HUD.Scale.Icon
+    local mainScale = AptoUI.HUD.Scale.Main
     local chainToHexInsideRatio = HexInsideLength / GetIconChainLength(iconCount)
     return min(maxScale, chainToHexInsideRatio)
 end

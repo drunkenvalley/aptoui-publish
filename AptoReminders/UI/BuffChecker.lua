@@ -1,4 +1,4 @@
-local addonName, AptoHUD = ...
+local addonName, AptoUI = ...
 
 local combatEvent = "PLAYER_REGEN_DISABLED"
 local outOfCombatEvent = "PLAYER_REGEN_ENABLED"
@@ -29,11 +29,11 @@ local function ShowBuffReminder(frame, isMissing)
     end
 end
 
-function AptoHUD.HUD.CreateBuffReminders()
-    local class, _ = AptoHUD.Utils.GetClassAndSpec()
-    local classBuffs = AptoHUD.Utils.ClassBuffLookup[class]
+function AptoUI.Reminders.CreateBuffReminders()
+    local class, _ = AptoUI.Utils.GetClassAndSpec()
+    local classBuffs = AptoUI.Utils.ClassBuffLookup[class]
 
-    local buffReminderFrame = AptoHUD.Utils.CreateHUDFrame(class)
+    local buffReminderFrame = AptoUI.Utils.CreateHUDFrame(class)
 
     local reminders = {}
     local reminderIndex = 0
@@ -47,7 +47,8 @@ function AptoHUD.HUD.CreateBuffReminders()
             reminderFrame:RegisterEvent(eventName)
         end
         -- we are registering/unregistering events based on combat
-        -- because in combat the unit auras are secret, so it doesn't work & throws a load of errors
+        -- because in combat the unit auras are secret,
+        -- which means it doesn't work & throws a load of errors
         -- so we might as well just hide the frames in this case
         reminderFrame:SetScript("OnEvent", function(self, event, unit)
             if event == combatEvent then
@@ -60,8 +61,8 @@ function AptoHUD.HUD.CreateBuffReminders()
                     reminderFrame:RegisterEvent(eventName)
                 end
             end
-            if AptoHUD.Utils.isUpdateEvent(buffCheckEvents, event) or event == outOfCombatEvent then
-                local isMissing = AptoHUD.Utils.HasMissingClassBuff(class)[classBuffType] or false
+            if AptoUI.Utils.isUpdateEvent(buffCheckEvents, event) or event == outOfCombatEvent then
+                local isMissing = AptoUI.Utils.HasMissingClassBuff(class)[classBuffType] or false
                 ShowBuffReminder(reminderFrame, isMissing)
             end
         end)

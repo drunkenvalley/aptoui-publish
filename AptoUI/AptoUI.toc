@@ -1,10 +1,11 @@
 ## Interface: 120000, 120001
-## Title: AptoHUD
+## Title: AptoUI
 ## Author: aptosaurinae
 ## Version: 0.1
-## Category: hud
+## Category: AptoUI
 ## SavedVariables: AptoHUDDB
 ## LoadSavedVariablesFirst: 1
+## IconTexture: Interface\AddOns\AptoUI\Textures\hex-icon-32.png
 
 Core.lua
 WowLookups/ClassSpecs.lua
@@ -13,10 +14,3 @@ Utils/Frames.lua
 Utils/ClassResources.lua
 Utils/PlayerData.lua
 Utils/ClassBuffs.lua
-Hud/BuffChecker.lua
-Hud/Geometry.lua
-Hud/Icons.lua
-Hud/Borders.lua
-Hud/Health.lua
-Hud/Power.lua
-AptoHUD.lua

@@ -1,4 +1,4 @@
-local addonName, AptoHUD = ...
+local addonName, AptoUI = ...
 
 -- Get secret health values
 local function GetHealthValues(unitName)
@@ -18,18 +18,18 @@ local function UpdateHealthTextureUsingPercent(unitName, textureItem)
     textureItem:SetVertexColor(perc1r, perc1, 0, 1)
 end
 
-function AptoHUD.HUD.CreateHexSegmentPlayerHP(parent)
+function AptoUI.HUD.CreateHexSegmentPlayerHP(parent)
     local frame = CreateFrame("Frame", nil, parent)
-    local xSize = AptoHUD.HUD.Size.Main * AptoHUD.HUD.Scale.Main
-    local ySize = AptoHUD.HUD.Size.Main * AptoHUD.HUD.Scale.Main
+    local xSize = AptoUI.HUD.Size.Main * AptoUI.HUD.Scale.Main
+    local ySize = AptoUI.HUD.Size.Main * AptoUI.HUD.Scale.Main
     frame:SetSize(xSize, ySize)
-    frame:SetPoint("CENTER", parent, "CENTER", AptoHUD.HUD.Offset.X, AptoHUD.HUD.Offset.Y)
-    frame:SetAlpha(AptoHUD.HUD.HUDAlpha.Main.NoCombat)
+    frame:SetPoint("CENTER", parent, "CENTER", AptoUI.HUD.Offset.X, AptoUI.HUD.Offset.Y)
+    frame:SetAlpha(AptoUI.HUD.HUDAlpha.Main.NoCombat)
 
-    AptoHUD.HUD.CreateBorder(frame, AptoHUD.HUD.Textures.HexBottomLeftBorder)
+    AptoUI.HUD.CreateBorder(frame, AptoUI.HUD.Textures.HexBottomLeftBorder)
 
     local mask = frame:CreateMaskTexture()
-    mask:SetTexture(AptoHUD.HUD.Textures.HexBottomLeft, "CLAMPTOBLACKADDITIVE", "CLAMPTOBLACKADDITIVE")
+    mask:SetTexture(AptoUI.HUD.Textures.HexBottomLeft, "CLAMPTOBLACKADDITIVE", "CLAMPTOBLACKADDITIVE")
     mask:SetAllPoints()
 
     local fill = frame:CreateTexture(nil, "ARTWORK", nil, 1)
@@ -45,13 +45,13 @@ function AptoHUD.HUD.CreateHexSegmentPlayerHP(parent)
             UpdateHealthTextureUsingPercent(unitName, fill)
         end
         if event == "PLAYER_REGEN_DISABLED" then
-            frame:SetAlpha(AptoHUD.HUD.HUDAlpha.Main.Combat)
+            frame:SetAlpha(AptoUI.HUD.HUDAlpha.Main.Combat)
         elseif event == "PLAYER_REGEN_ENABLED" then
-            frame:SetAlpha(AptoHUD.HUD.HUDAlpha.Main.NoCombat)
+            frame:SetAlpha(AptoUI.HUD.HUDAlpha.Main.NoCombat)
         end
     end)
 
-    local regEvents = AptoHUD.HUD.PlayerHealthUpdateEvents
+    local regEvents = AptoUI.HUD.PlayerHealthUpdateEvents
     for _, eventName in ipairs(regEvents) do
         frame:RegisterEvent(eventName)
     end
