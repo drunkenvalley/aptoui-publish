@@ -5,14 +5,14 @@ AptoHUDDB = AptoHUDDB or {};
 
 -- Settings
 AptoHUD.debug = false
-AptoHUD.HUD.PlayerHealthEvents = {
+AptoHUD.HUD.PlayerHealthUpdateEvents = {
     "UNIT_HEALTH",
     "UNIT_MAXHEALTH",
     "PLAYER_REGEN_DISABLED",
     "PLAYER_REGEN_ENABLED",
     "PLAYER_TARGET_CHANGED",
 }
-AptoHUD.HUD.PlayerPowerEvents = {
+AptoHUD.HUD.PlayerPowerUpdateEvents = {
     "UNIT_POWER_UPDATE",
     "PLAYER_REGEN_DISABLED",
     "PLAYER_REGEN_ENABLED",
@@ -43,10 +43,10 @@ AptoHUD.HUD.Textures = {
 
 -- ----- Apply HUD
 
-local hudHealthEvents = {
+local hudHealthFrameRebuildEvents = {
     PLAYER_LOGIN = true,
 }
-local hudPowerEvents = {
+local hudPowerFrameRebuildEvents = {
     PLAYER_LOGIN = true,
     UNIT_MAXPOWER = true,
     UPDATE_SHAPESHIFT_FORM = true,
@@ -55,14 +55,6 @@ local hudPowerEvents = {
     UNIT_DISPLAYPOWER = true,
     RUNE_TYPE_UPDATE = true,
 }
-local hudBuffCheckEvents = {
-    PLAYER_LOGIN = true,
-    UNIT_AURA = true,
-}
-
-local function isUpdateEvent(eventList, eventFired)
-    return eventList[eventFired] == true
-end
 
 local frame = CreateFrame("Frame")
 for eventName, _ in pairs(hudHealthEvents) do
@@ -76,30 +68,6 @@ local healthFrame = nil
 local powerFrame = nil
 local powerIcons = nil
 
-local function destroyHUDFrame(frame)
-    if not frame or type(frame) ~= "table" then
-        return
-    end
-    if frame then
-        frame:UnregisterAllEvents()
-        frame:SetScript("OnEvent", nil)
-        frame:SetScript("OnHide", nil)
-        frame:SetScript("OnShow", nil)
-    end
-    local children = { frame:GetChildren() }
-    for _, child in ipairs(children) do
-        destroyHUDFrame(child)
-    end
-    frame:Hide()
-end
-
-local function createHUDFrame(frameName)
-    local frame = CreateFrame("Frame", frameName, UIParent)
-    frame:SetPoint("CENTER")
-    frame:SetSize(1, 1)
-    return frame
-end
-
 local playerLoggedIn = false
 
 frame:SetScript("OnEvent", function(self, event)
@@ -110,21 +78,23 @@ frame:SetScript("OnEvent", function(self, event)
 
         AptoHUDDB.playerName = UnitName("player");
         print("AptoHUD loaded. Hello,", AptoHUDDB.playerName);
+
+        AptoHUD.HUD.CreateBuffReminders()
     end
     if playerLoggedIn then
-        if isUpdateEvent(hudHealthEvents, event) then
+        if AptoHUD.Utils.isUpdateEvent(hudHealthEvents, event) then
             -- Health
             if healthFrame then
-                destroyHUDFrame(healthFrame)
+                AptoHUD.Utils.DestroyHUDFrame(healthFrame)
             end
-            healthFrame = createHUDFrame("healthFrame")
+            healthFrame = AptoHUD.Utils.CreateHUDFrame("healthFrame")
             AptoHUD.HUD.CreateHexSegmentPlayerHP(healthFrame)
         end
-        if isUpdateEvent(hudPowerEvents, event) then
+        if AptoHUD.Utils.isUpdateEvent(hudPowerEvents, event) then
             if powerFrame then
-                destroyHUDFrame(powerFrame)
+                AptoHUD.Utils.DestroyHUDFrame(powerFrame)
             end
-            powerFrame = createHUDFrame("powerFrame")
+            powerFrame = AptoHUD.Utils.CreateHUDFrame("powerFrame")
             AptoHUD.HUD.CreateHexSegmentPlayerPower(
                 powerFrame,
                 "primary",
@@ -133,9 +103,9 @@ frame:SetScript("OnEvent", function(self, event)
             )
 
             if powerIcons then
-                destroyHUDFrame(powerIcons)
+                AptoHUD.Utils.DestroyHUDFrame(powerIcons)
             end
-            powerIcons = createHUDFrame("powerIcons")
+            powerIcons = AptoHUD.Utils.CreateHUDFrame("powerIcons")
             local resources = AptoHUD.Utils.GetResourceTypes()
             for resourceType, _ in pairs(resources) do
                 if resourceType ~= "primary" then
@@ -143,7 +113,7 @@ frame:SetScript("OnEvent", function(self, event)
                 end
             end
         end
-        if isUpdateEvent(hudBuffCheckEvents, event) then
+        if AptoHUD.Utils.isUpdateEvent(hudBuffCheckEvents, event) then
             local missingBuffs = AptoHUD.Utils.HasMissingClassBuff()
             for buffTypeName, buffTypeMissing in pairs(missingBuffs) do
                 print(buffTypeName, buffTypeMissing)

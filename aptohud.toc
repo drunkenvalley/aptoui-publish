@@ -9,9 +9,11 @@
 Core.lua
 WowLookups/ClassSpecs.lua
 WowLookups/PowerTypes.lua
+Utils/Frames.lua
 Utils/ClassResources.lua
 Utils/PlayerData.lua
-Utils/BuffChecker.lua
+Utils/ClassBuffs.lua
+Hud/BuffChecker.lua
 Hud/Geometry.lua
 Hud/Icons.lua
 Hud/Borders.lua
