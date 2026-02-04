@@ -55,6 +55,10 @@ local hudPowerEvents = {
     UNIT_DISPLAYPOWER = true,
     RUNE_TYPE_UPDATE = true,
 }
+local hudBuffCheckEvents = {
+    PLAYER_LOGIN = true,
+    UNIT_AURA = true,
+}
 
 local function isUpdateEvent(eventList, eventFired)
     return eventList[eventFired] == true
@@ -137,6 +141,12 @@ frame:SetScript("OnEvent", function(self, event)
                 if resourceType ~= "primary" then
                     AptoHUD.HUD.ResourceIcons(powerIcons, resourceType)
                 end
+            end
+        end
+        if isUpdateEvent(hudBuffCheckEvents, event) then
+            local missingBuffs = AptoHUD.Utils.HasMissingClassBuff()
+            for buffTypeName, buffTypeMissing in pairs(missingBuffs) do
+                print(buffTypeName, buffTypeMissing)
             end
         end
     end
