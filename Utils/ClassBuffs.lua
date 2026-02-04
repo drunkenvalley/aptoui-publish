@@ -1,14 +1,24 @@
 local addonName, AptoHUD = ...
 
 AptoHUD.Utils.ClassBuffLookup = {
+    druid = {},
+    evoker = {},
     mage = {},
+    priest = {},
     rogue = {},
+    warrior = {},
+}
+AptoHUD.Utils.ClassBuffLookup["druid"]["Mark of the Wild"] = {
+    motw = "Mark of the Wild"
 }
 AptoHUD.Utils.ClassBuffLookup["evoker"]["Blessing of the Bronze"] = {
     blessingbronze = "Blessing of the Bronze"
 }
 AptoHUD.Utils.ClassBuffLookup["mage"]["Arcane Intellect"] = {
     arcaneint = "Arcane Intellect"
+}
+AptoHUD.Utils.ClassBuffLookup["priest"]["Power Word: Fortitude"] = {
+    pwfort = "Power Word: Fortitude"
 }
 AptoHUD.Utils.ClassBuffLookup["rogue"]["Lethal Poison"] = {
     deadly = "Deadly Poison",
@@ -19,6 +29,9 @@ AptoHUD.Utils.ClassBuffLookup["rogue"]["Non-Lethal Poison"] = {
     atrophic = "Atrophic Poison",
     crippling = "Crippling Poison",
     numbing = "Numbing Poison",
+}
+AptoHUD.Utils.ClassBuffLookup["warrior"]["Battle Shout"] = {
+    bshout = "Battle Shout"
 }
 
 
