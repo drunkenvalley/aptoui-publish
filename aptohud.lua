@@ -146,10 +146,13 @@ end);
 local CastBar = {}
 
 CastBar.config = {
-    width  = 200,
-    height = 15,
+    -- do not reduce width past 225 if using default textures,
+    -- this is the min size of the textures Blizzard uses
+    width  = 350,
+    height = 40,
     alpha  = 0.5,
     textInside = true,
+    scale = 0.5
 }
 
 function CastBar:Apply()
@@ -159,6 +162,7 @@ function CastBar:Apply()
     bar:SetWidth(self.config.width)
     bar:SetHeight(self.config.height)
     bar:SetAlpha(self.config.alpha)
+    bar:SetScale(self.config.scale)
 
     local text = bar.Text or bar.TextLabel or bar.TextString
     if text then
@@ -171,23 +175,38 @@ function CastBar:Apply()
         else
             text:SetPoint("TOP", bar, "BOTTOM", 0, -2)
         end
+        text:SetScale(1 / self.config.scale)
     end
 
+    -- disable background "shadow"
     for i, region in ipairs({ PlayerCastingBarFrame:GetRegions() }) do
-        local tex = region.GetTexture and region:GetTexture()
-        if tex then
-            region:SetTexture(nil)
-            region:Hide()
+        if i < 3 then
+            local tex = region.GetTexture and region:GetTexture()
+            if tex then
+                region:SetTexture(nil)
+                region:Hide()
+            end
         end
     end
-
 end
 
 local frame = CreateFrame("Frame")
 frame:RegisterEvent("PLAYER_LOGIN")
+frame:RegisterEvent("CVAR_UPDATE")
 
-frame:SetScript("OnEvent", function()
-    CastBar:Apply()
+frame:SetScript("OnEvent", function(self, event, cvar)
+    if event == "PLAYER_LOGIN" then
+        CastBar:Apply()
+
+        -- these are to make sure the text gets moved back into the cast bar after edit mode
+        hooksecurefunc(PlayerCastingBarFrame, "ApplySystemAnchor", function()
+            CastBar:Apply()
+        end)
+    -- make sure edits get re-applied after edit mode deactivated
+    elseif event == "CVAR_UPDATE" and cvar == "editMode" then
+        -- Edit Mode toggled on/off
+        C_Timer.After(0.1, function()
+            CastBar:Apply()
+        end)
+    end
 end)
-
-AptoHUD.HUD.CastBar = CastBar
