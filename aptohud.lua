@@ -106,6 +106,21 @@ frame:SetScript("OnEvent", function(self, event)
 
         AptoHUDDB.playerName = UnitName("player");
         print("AptoHUD loaded. Hello,", AptoHUDDB.playerName);
+
+        for i, region in ipairs({ PlayerCastingBarFrame:GetRegions() }) do
+            local tex = region.GetTexture and region:GetTexture()
+            local atlas = region.GetAtlas and region:GetAtlas()
+            print(
+                i,
+                region:GetObjectType(),
+                region:GetDrawLayer(),
+                atlas or tex or "no texture"
+            )
+        end
+
+        for i, child in ipairs({ PlayerCastingBarFrame:GetChildren() }) do
+            print(i, child:GetObjectType(), child:GetName())
+        end
     end
     if playerLoggedIn then
         if isUpdateEvent(hudHealthEvents, event) then
@@ -141,3 +156,53 @@ frame:SetScript("OnEvent", function(self, event)
         end
     end
 end);
+
+-- Apply castbar customisation
+local CastBar = {}
+
+CastBar.config = {
+    width  = 200,
+    height = 15,
+    alpha  = 0.5,
+    textInside = true,
+}
+
+function CastBar:Apply()
+    local bar = PlayerCastingBarFrame
+    if not bar then return end
+
+    bar:SetWidth(self.config.width)
+    bar:SetHeight(self.config.height)
+    bar:SetAlpha(self.config.alpha)
+
+    local text = bar.Text or bar.TextLabel or bar.TextString
+    if text then
+        text:ClearAllPoints()
+
+        if self.config.textInside then
+            text:SetPoint("CENTER", bar, "CENTER", 0, 0)
+            text:SetJustifyH("CENTER")
+            text:SetJustifyV("MIDDLE")
+        else
+            text:SetPoint("TOP", bar, "BOTTOM", 0, -2)
+        end
+    end
+
+    for i, region in ipairs({ PlayerCastingBarFrame:GetRegions() }) do
+        local tex = region.GetTexture and region:GetTexture()
+        if tex then
+            region:SetTexture(nil)
+            region:Hide()
+        end
+    end
+
+end
+
+local frame = CreateFrame("Frame")
+frame:RegisterEvent("PLAYER_LOGIN")
+
+frame:SetScript("OnEvent", function()
+    CastBar:Apply()
+end)
+
+AptoHUD.HUD.CastBar = CastBar
