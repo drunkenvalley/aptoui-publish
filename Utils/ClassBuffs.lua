@@ -1,6 +1,6 @@
 local addonName, AptoHUD = ...
 
-local classBuffListNames = {
+AptoHUD.Utils.ClassBuffLookup = {
     mage = {
         Int = {
             name = "Arcane Intellect",
@@ -17,6 +17,7 @@ local classBuffListNames = {
                 instant = "Instant Poison",
                 wound = "Wound Poison",
             },
+        },
         NonLethal = {
             name = "Non-Lethal Poison",
             buffs = {
@@ -46,7 +47,7 @@ function AptoHUD.Utils.HasMissingClassBuff(class)
     end)
 
     local missingBuffTypes = {}
-    for buffCategoryType, buffCategoryInfo in pairs(classBuffListNames[class]) do
+    for buffCategoryType, buffCategoryInfo in pairs(AptoHUD.Utils.ClassBuffLookup[class]) do
         missingBuffTypes[buffCategoryInfo.name] = not CheckActiveBuff(buffCategoryInfo.buffs, activeBuffs)
     end
 

@@ -51,7 +51,7 @@ function AptoHUD.HUD.CreateHexSegmentPlayerHP(parent)
         end
     end)
 
-    local regEvents = AptoHUD.HUD.PlayerHealthEvents
+    local regEvents = AptoHUD.HUD.PlayerHealthUpdateEvents
     for _, eventName in ipairs(regEvents) do
         frame:RegisterEvent(eventName)
     end

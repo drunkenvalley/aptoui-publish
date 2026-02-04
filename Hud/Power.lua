@@ -84,7 +84,7 @@ function AptoHUD.HUD.CreateHexSegmentPlayerPower(parent, resourceType, texturePa
         end
     end)
 
-    local regEvents = AptoHUD.HUD.PlayerPowerEvents
+    local regEvents = AptoHUD.HUD.PlayerPowerUpdateEvents
     for _, eventName in ipairs(regEvents) do
         frame:RegisterEvent(eventName)
     end
@@ -192,7 +192,7 @@ function AptoHUD.HUD.ResourceIcons(parent, resourceType)
             end
         end)
 
-        local genericEvents = AptoHUD.HUD.PlayerPowerEvents
+        local genericEvents = AptoHUD.HUD.PlayerPowerUpdateEvents
         local specificEvents = AptoHUD.Utils.GetPowerEvents(GetResources(resourceType))
         for _, eventName in ipairs(genericEvents) do
             frame:RegisterEvent(eventName)

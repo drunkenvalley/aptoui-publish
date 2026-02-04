@@ -57,10 +57,10 @@ local hudPowerFrameRebuildEvents = {
 }
 
 local frame = CreateFrame("Frame")
-for eventName, _ in pairs(hudHealthEvents) do
+for eventName, _ in pairs(hudHealthFrameRebuildEvents) do
     frame:RegisterEvent(eventName)
 end
-for eventName, _ in pairs(hudPowerEvents) do
+for eventName, _ in pairs(hudPowerFrameRebuildEvents) do
     frame:RegisterEvent(eventName)
 end
 
@@ -82,7 +82,7 @@ frame:SetScript("OnEvent", function(self, event)
         AptoHUD.HUD.CreateBuffReminders()
     end
     if playerLoggedIn then
-        if AptoHUD.Utils.isUpdateEvent(hudHealthEvents, event) then
+        if AptoHUD.Utils.isUpdateEvent(hudPowerFrameRebuildEvents, event) then
             -- Health
             if healthFrame then
                 AptoHUD.Utils.DestroyHUDFrame(healthFrame)
@@ -90,7 +90,7 @@ frame:SetScript("OnEvent", function(self, event)
             healthFrame = AptoHUD.Utils.CreateHUDFrame("healthFrame")
             AptoHUD.HUD.CreateHexSegmentPlayerHP(healthFrame)
         end
-        if AptoHUD.Utils.isUpdateEvent(hudPowerEvents, event) then
+        if AptoHUD.Utils.isUpdateEvent(hudPowerFrameRebuildEvents, event) then
             if powerFrame then
                 AptoHUD.Utils.DestroyHUDFrame(powerFrame)
             end
@@ -111,12 +111,6 @@ frame:SetScript("OnEvent", function(self, event)
                 if resourceType ~= "primary" then
                     AptoHUD.HUD.ResourceIcons(powerIcons, resourceType)
                 end
-            end
-        end
-        if AptoHUD.Utils.isUpdateEvent(hudBuffCheckEvents, event) then
-            local missingBuffs = AptoHUD.Utils.HasMissingClassBuff()
-            for buffTypeName, buffTypeMissing in pairs(missingBuffs) do
-                print(buffTypeName, buffTypeMissing)
             end
         end
     end
