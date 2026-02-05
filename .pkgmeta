@@ -1,1 +1,7 @@
 package-as: AptoUI
+
+move-folders:
+  AptoCastBar: AptoCastBar
+  AptoHUD: AptoHUD
+  AptoReminders: AptoReminders
+  AptoUI: AptoUI
