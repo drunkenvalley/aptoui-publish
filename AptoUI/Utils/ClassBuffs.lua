@@ -46,9 +46,18 @@ end
 
 function AptoUI.Utils.HasMissingClassBuff(class)
     local activeBuffs = {}
-    AuraUtil.ForEachAura("player", "HELPFUL", nil, function(aura)
-        activeBuffs[aura] = true
+    -- if we get an error trying to get auras (such as for a brief moment as combat starts)
+    -- we want to just skip doing this.
+    local noError, err = pcall(function()
+        AuraUtil.ForEachAura("player", "HELPFUL", nil, function(aura)
+            activeBuffs[aura] = true
+        end)
     end)
+
+    local debug = false
+    if not noError and debug then
+        print("AptoUI.Utils.HasMissingClassBuff: error checking if missing class buffs")
+    end if
 
     local missingBuffTypes = {}
     for buffCategoryName, buffCategoryBuffNames in pairs(AptoUI.Utils.ClassBuffLookup[class]) do
