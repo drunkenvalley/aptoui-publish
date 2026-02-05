@@ -69,7 +69,7 @@ frame:SetScript("OnEvent", function(self, event)
         playerLoggedIn = true
     end
     if playerLoggedIn then
-        if AptoUI.Utils.isUpdateEvent(hudPowerFrameRebuildEvents, event) then
+        if AptoUI.Utils.isUpdateEvent(hudHealthFrameRebuildEvents, event) then
             -- Health
             if healthFrame then
                 AptoUI.Utils.DestroyHUDFrame(healthFrame)

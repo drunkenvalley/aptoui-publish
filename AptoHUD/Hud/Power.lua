@@ -38,12 +38,15 @@ local function UpdatePowerTextureUsingPercent(unitName, textureItem, resourceTyp
 end
 
 function AptoUI.HUD.CreateHexSegmentPlayerPower(parent, resourceType, texturePath, textureBorderPath)
+    if not AptoUI.HUD.powerHUDPersistentAlpha then
+        AptoUI.HUD.powerHUDPersistentAlpha = AptoUI.HUD.HUDAlpha.Main.NoCombat
+    end
     local frame = CreateFrame("Frame", nil, parent)
     local xSize = AptoUI.HUD.Size.Main * AptoUI.HUD.Scale.Main
     local ySize = AptoUI.HUD.Size.Main * AptoUI.HUD.Scale.Main
     frame:SetSize(xSize, ySize)
     frame:SetPoint("CENTER", parent, "CENTER", AptoUI.HUD.Offset.X, AptoUI.HUD.Offset.Y)
-    frame:SetAlpha(AptoUI.HUD.HUDAlpha.Main.NoCombat)
+    frame:SetAlpha(AptoUI.HUD.powerHUDPersistentAlpha)
 
     AptoUI.HUD.CreateBorder(frame, textureBorderPath)
 
@@ -65,8 +68,10 @@ function AptoUI.HUD.CreateHexSegmentPlayerPower(parent, resourceType, texturePat
         end
         if event == "PLAYER_REGEN_DISABLED" then
             frame:SetAlpha(AptoUI.HUD.HUDAlpha.Main.Combat)
+            AptoUI.HUD.powerHUDPersistentAlpha = AptoUI.HUD.HUDAlpha.Main.Combat
         elseif event == "PLAYER_REGEN_ENABLED" then
             frame:SetAlpha(AptoUI.HUD.HUDAlpha.Main.NoCombat)
+            AptoUI.HUD.powerHUDPersistentAlpha = AptoUI.HUD.HUDAlpha.Main.NoCombat
         end
     end)
 
@@ -153,6 +158,9 @@ local function UpdatePowerTextureUsingCount(iconNumber, unitName, textureItem, r
 end
 
 function AptoUI.HUD.ResourceIcons(parent, resourceType)
+    if not AptoUI.HUD.resourceIconsPersistentAlpha then
+        AptoUI.HUD.resourceIconsPersistentAlpha = AptoUI.HUD.HUDAlpha.Main.NoCombat
+    end
     local _, countMax = ResourceGetter(resourceType)
     if countMax == nil then return nil end
     local frameLayer = 0
@@ -176,8 +184,10 @@ function AptoUI.HUD.ResourceIcons(parent, resourceType)
             end
             if event == "PLAYER_REGEN_DISABLED" then
                 frame:SetAlpha(AptoUI.HUD.HUDAlpha.Icon.Combat)
+                AptoUI.HUD.resourceIconsPersistentAlpha = AptoUI.HUD.HUDAlpha.Icon.Combat
             elseif event == "PLAYER_REGEN_ENABLED" then
                 frame:SetAlpha(AptoUI.HUD.HUDAlpha.Icon.NoCombat)
+                AptoUI.HUD.resourceIconsPersistentAlpha = AptoUI.HUD.HUDAlpha.Icon.NoCombat
             end
         end)
 

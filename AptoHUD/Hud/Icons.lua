@@ -13,7 +13,7 @@ local function CreateIcon(parent, xOffset, yOffset, iconScale, frameLayer, textu
     local ySize = AptoUI.HUD.Size.Icon * iconScale
     frame:SetSize(xSize, ySize)
     frame:SetPoint("CENTER", parent, "CENTER", xOffset, yOffset)
-    frame:SetAlpha(1)
+    frame:SetAlpha(AptoUI.HUD.resourceIconsPersistentAlpha)
 
     local mask = frame:CreateMaskTexture()
     local maskTexture = texturePath
